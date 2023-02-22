@@ -1,7 +1,7 @@
 ## CSS notes:
 
 Things learned: 
-github is amazing for mistakes; 
+github is amazing for going back to working code after mistakes; 
 
 # FONTS
 Use https://fonts.google.com/ for free fonts
