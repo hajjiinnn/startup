@@ -1,5 +1,8 @@
 ## CSS notes:
 
+Things learned: 
+github is amazing for mistakes; 
+
 # FONTS
 Use https://fonts.google.com/ for free fonts
  example: 
