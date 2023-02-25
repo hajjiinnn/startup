@@ -17,6 +17,7 @@ body {
     flex-direction: column;
     align-items: right;
     justify-content: space-around;
+    background-color: lavender;
   }
   
   footer {
@@ -51,4 +52,3 @@ body {
     float: right;
     padding: 0 30px;
   }
-    
