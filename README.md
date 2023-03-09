@@ -9,9 +9,9 @@ Use https://fonts.google.com/ for free fonts
   }
 
 ### Jenson's Midterm Review
-Q1:   HTML <div> does?        creates a division element  
+Q1:   HTML `<div>` does?        creates a division element  
 
-Q1.5: HTML <b> means?       bring attention  
+Q1.5: HTML `<b>` means?       bring attention  
 
 Q2:   To point to another DNS record, you should use the following DNS record type:           CNAME (think of it as an alias)  
 
@@ -19,7 +19,7 @@ Q2.5: What would you use to point to a literal IP address:      use an A record
 
 Q3:   t/f You can use this CSS to load fonts from Google:                 true  
 
-            @import url('https://fonts.googleapis.com/css?family=Quicksand');
+            `@import url('https://fonts.googleapis.com/css?family=Quicksand');`
 
 Q4:   What will the following output?                burger fries taco shake noodles  
 
@@ -37,7 +37,7 @@ Q4:   What will the following output?                burger fries taco shake noo
             .finally(() => console.log('noodles'))
 
             console.log('fries');
-Q5:   
+Q5:   Which of the following is valid JSON?
 
 Q6:    
 
