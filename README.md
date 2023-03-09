@@ -19,7 +19,7 @@ Q2.5: What would you use to point to a literal IP address:      use an A record
 
 Q3:   t/f You can use this CSS to load fonts from Google:                 true  
 
-            `@import url('https://fonts.googleapis.com/css?family=Quicksand');`
+            @import url('https://fonts.googleapis.com/css?family=Quicksand');
 
 Q4:   What will the following output?                burger fries taco shake noodles  
 
@@ -37,9 +37,13 @@ Q4:   What will the following output?                burger fries taco shake noo
             .finally(() => console.log('noodles'))
 
             console.log('fries');
-Q5:   Which of the following is valid JSON?
+Q5:   Which of the following is valid JSON?   {"x":3}  Key value must always be in double quotes   
+      `{x:3}   {"x":3}   {'x':3}   {"x":undefined}`
 
-Q6:    
+Q6:   How would you turn only the BYU text blue using CSS?  'div.header {color:blue}`  
+
+<div>other</div>
+<div> class="header">BYU</div>
 
 Q7:   
 
