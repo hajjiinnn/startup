@@ -41,9 +41,10 @@ Q5:   Which of the following is valid JSON?   {"x":3}  Key value must always be 
       `{x:3}   {"x":3}   {'x':3}   {"x":undefined}`
 
 Q6:   How would you turn only the BYU text blue using CSS?  'div.header {color:blue}`  
-
+```
 <div>other</div>
 <div> class="header">BYU</div>
+```
 
 Q7:   
 
