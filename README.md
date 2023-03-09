@@ -1,7 +1,4 @@
-## CSS notes:
-
-Things learned: 
-github is amazing for going back to working code after mistakes; 
+# NOTES
 
 # FONTS
 Use https://fonts.google.com/ for free fonts
@@ -11,11 +8,56 @@ Use https://fonts.google.com/ for free fonts
     font-family: 'Source Code Pro';
   }
 
+### Jenson's Midterm Review
+Q1:   HTML <div> does?        creates a division element
+Q1.5: HTML <b> means?       bring attention
+Q2:   To point to another DNS record, you should use the following DNS record type:           CNAME (think of it as an alias)
+Q2.5: What would you use to point to a literal IP address:      use an A record
+Q3:   t/f You can use this CSS to load fonts from Google:                 true
+            @import url('https://fonts.googleapis.com/css?family=Quicksand');
+Q4:   What will the following output?                burger fries taco shake noodles
+
+            const p = new Promise((resolve, reject) => {
+              setTimeout(() => {
+                console.log('taco');
+                resolve(true);
+              }, 10000);
+            });
+            console.log('burger');
+
+            p
+            .then((result) => console.log('shake'))
+            .catch((e) => console.log('salad'))
+            .finally(() => console.log('noodles'))
+
+            console.log('fries');
+Q5:   
+Q6:    
+Q7:   
+Q8:   
+Q9:   
+Q10:   
+Q11:  
+Q12:  
+Q13:  
+Q14:  
+Q15:  
+Q16:  
+Q17:  
+Q18:  
+Q19:  
+Q20:  
+Q21:  
+Q22:  
+Q23:  
 
 
 
 
-#### startup ####
+
+
+
+#### startup
 startup assignment cs260 W23
  
 Pitch: 

@@ -29,7 +29,6 @@ body {
     padding-top: 40px;
     width: 100vw;
     font-family: 'Amatic SC', cursive;
-    color: 
     flex: 0 30px;
     text-align: center;
     display: inline-block;
@@ -40,12 +39,10 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    display: inline-block;
   }
 
-  .footer-menu{
-    margin-bottom: 20px;
-    list-style: none;
-  }
+
 
   .footer-menu ul{
     display:flex;
@@ -77,5 +74,8 @@ body {
     float: right;
     padding: 0 0.3em;
   }
-  
-  
+
+  menu .nav-item .dropdown-item {
+    float:right;
+    
+  }
