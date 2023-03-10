@@ -40,7 +40,8 @@ Q4:   What will the following output?                burger fries taco shake noo
 Q5:   Which of the following is valid JSON?   {"x":3}  Key value must always be in double quotes   
       `{x:3}   {"x":3}   {'x':3}   {"x":undefined}`
 
-Q6:   How would you turn only the BYU text blue using CSS?  `div.header {color:blue}`  the second one is wrong because there is no `header` element in use
+Q6:   How would you turn only the BYU text blue using CSS?  `div.header {color:blue}`  
+the second one is wrong because there is no header element in use
 ```
 <div>other</div>
 <div> class="header">BYU</div>
@@ -57,9 +58,9 @@ let a = ['cow', 'rat', 'fish'];
 let b = a.filter(v => v.match(/A|f/i));
 console.log(b);
 ```
-filter function returns an array with only the values that are told to be returned
-match function is matching with RegEx `//` denote RegEx
-the `i` stands for in case-sensitive  
+filter function returns an array with only the values that are told to be returned   
+match function is matching with RegEx `//` denote RegEx   
+the `i` stands for in case-sensitive   
 
 Q9:   Which of the folling is NOT a valid Javascript function?  `function f(x) = {}`  Javascript takes no equal sign in the middle
 
@@ -82,31 +83,91 @@ let a = ['cow', 'rat', 'fish'];
 let b = a.reduce((a,v) => [a,v].join(':'));
 console.log(b);
 ```
-reduce function
-join function 
+reduce function takes an array and reduces it down to one value
+join function creates and returns a new string, separated by commas or a specified separator string
 
-Q13:  
+Q13:  What is the HTML tag for an unordered list? `<ul>`
 
-Q14:  
+Q14:  What does the following code do?    Adds a mouseover event listener to a p element
+```
+document.querySelector('p').addEventListener('mouseover', console.log);
+```
+document object is always available in your interpreter, it gives you back the DOM basically (the object to interact with the DOM)  
+querySelector allows you to pass the first CSS selector into it  (querySelectorAll would return an iterator which would all you to access all of the specified selectors)  
+addEventListener whenever there is a mouseover, it will call the event handler/callback function you provide (console.log)  
 
-Q15:  
+Q15:  Which HTML will create a valid hyperlink?   `<a href = 'https://c.com/>x</a>`  
+`<img src= "__" alt="___">` is for image tags  
 
-Q16:  
+Q16:  What does the following code output?     ['a1', 'a2', 'a3']
+```
+let a = [1, 2, 3];
+let e = a.map(number => {
+  return ('a' + number)
+});
+console.log(e);
+```
+map function takes an array and maps it to an array of equal size with the values mapped to something else  
 
-Q17:  
+Q17:  What will the following output?    A D B  
+```
+const a = async function() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {console.log('D'); resolve(true)}, 10000);
+  })
+}
 
-Q18:  
+try {
+    console.log('A');
+    await a();
+    console.log('B')
+} catch(e) {
+    console.log('C');
+}
+```
 
-Q19:  
+Q18:  What does the DOM textContent property do?    Sets the child text for the an element  
 
-Q20:  
+Q19:  Which of the following is a DNS subdomain?   cs260.cs.byu.edu  (the whole thing is the subdomain)  
 
-Q21:  
+Q20:  How will the "hello world" text be oriented?    Two lines, World and then Hello  
+```
+<html>
+<head>
+  <style>
+    div{
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+    }
+  </style>  
+</head>
+<body>
+  <div>
+    <p>Hello</p>
+    <p>World</p>
+  </div>
+</body>
+</html>
+```
 
-Q22:  
+Q21:  Executing the following will outpput:     4  
+```
+const f = y => ++y;
+console.log(f(3));
+```
+if there were curly braces it would return `undefined` because you didn't specify what the return is  
 
-Q23:  
+Q22:  Which of the folling is a valid JavaScript object?   {n:1}  
+` {"n" = "1"}     {n:1}     {n=1}     {"n"=1}`  
+no `=` in js with key value pairs  
+having quotes is perfectly fine... JSON requires double quotes.. Javascript doesn't..  
 
+Q23:  The following console command makes a script executable:   chmod +x deploy.sh  
+chmod +x allows executalbe permission
+sudo stands for "substitue user do" or "super user do"; allows you to temporarily elevate your current user account to have root privileges  
+ls lists contents of current directory
+ssh 
 
 
 ## Memory of Light's notes
@@ -115,7 +176,6 @@ Q23:
 This deletes previous deployment of simon, copies all of the files in the directory, and tells caddy to host the files under the simon subdomain.
 I learned a ton about the different html elements and their attributes and what they actually do. For example, the for attribute associates with an id and links the label to the input box so that when you click the name you are directed to the input. In addition I took it upon myself to study the paths and how that works. I learned that M is moveto and basically just specifies a point and another and another until you have a shape that can be filled. Unlike M, L actually draws lines as it moves. Q makes a quadratic curve starting that the last point previous to Q and going to the second input of Q. The first Q input is the focal point. I also learned how coordinates are counted in the viewBox. They start at the top left which is 0,0. Down is positive y, right is positive x. I was also able to just really get in my head how certain elements can be used and the organization of a page is displayed. It was confusing for a while because it seemed like many elements didn't produce noticeable effects, but now I'm seeing the potential for a lot of these division to be used for styling and interactivity purposes which really cleared a lot of confusion. I also learned that readonly is applied to input when you want it to just be display and not have the user input anything. Overall it was mostly learning about individual attributes and elements of which I made note of in repsective sections of this document. 
 ## Simon Feb 14 CSS What I learned
-So most of what I learned was a ton of CSS properties and value possibilities. Thank you internet and ChatGPT for helping me understand. There is just so many and it's impossible to keep them all in your head when you're a beginner so it was good to have stuff I could ask on the spot to remind me. Most of what I learned is typed in this document but I will paste it here.
 
 Positioning Functions
 - float moves an element to the left or right of its container element and allows inline elements to wrap around it. 
@@ -139,22 +199,15 @@ Design Functions
 - width: 100% - sets the width equal to the width of the parent element
 
 CSS Units and Definitions
-80vmin - 80 percent of the viewport's smaller dimension
-px - pixels
-em - the font size of the parent element
-content box - the element; default size of element;
-padding - the next out, clears an area around the content. The padding is transparent; default 0
-border- the edge; default 0
-margin- empty space between elements if you add it; default 0
+80vmin - 80 percent of the viewport's smaller dimension  
+px - pixels  
+em - the font size of the parent element  
+content box - the element; default size of element;  
+padding - the next out, clears an area around the content. The padding is transparent; default 0  
+border- the edge; default 0  
+margin- empty space between elements if you add it; default 0  
 fr - only availabe in display: grid; means fraction of available space. 1fr means all of the available space. You can also combine them in rations so 1fr and 2fr would split the space into three parts and give 1 part to an element and 2 parts to another
 
-That is not an exhaustive list but mostly what I learned is that CSS is very complicated and frustrating especially because I'm still trying to figure out how everything interacts. As I went through the Simon doc and typed out everything you had in the original simon, I made sure to understand what every property and parameter meant so that I could absorb it better. I also learned a lot about bootstrap custom classes and how they make life a little easier especially with their prefabricated color schemes.
-## Startup What I learned Feb. 20
-I learned that I actually really dread making these websites. I think I might have bitten off more than I can chew with this project and everything else I have going on. It makes me nauseous to even open up my html and css files. I learned a lot about how to display things and also how not to display things unfortunately that was a large portion of my time. I learned how to link CSS files and align different display forms. I figured out how to put in background images and how to move them to exact positions. I basically solidified my knowledge of all the things I have learned thus far to do with syntax and formatting for CSS. I also learned how to efficiently look things up to do with html and css. The rest of my notes are added throughout this file with tidbits I want to remember.
-## Simon What I learned March 4
-Okay so this was actually a very helpful assignment. I was feeling very discouraged and overwhelmed by the javascript modules because I wasn't understanding, but as I went through the logic of simon and looked up things when I didn't understand, I was able to understand every part of the javascript. Replicating it might be hard but I made sure to type it all out so I could get it in my fingers and memory better. I got a much better grasp on promises and async/await. I also understand a little better how to create and insert elements into the DOM. Thank heavens there weren't that many arrow functions though. Also I learned a bit more about destructuring when it comes to iterating through a loop which I didn't know was possible at the same time.
-## Startup Javascript March 6
-I learned a ton about javascript from doing this actually. Probably more than I learned from simon. Building the programs myself - with the wisdom of the internet and mdn docs - helped me get into my brain how it all works. I understand local storage a lot better now and how things are stored there. I understand what JSON is and how to get data from storage and convert it from JSON to HTML. I understand a lot better on injecting things like a whole grid into a document and how to set an element to be a placeholder basically. I also understand how javascript uses functions as first order objects better. It's still a bit strange to me and I get confused sometimes but it's getting much easier to wrap my head around. Overall I understand how to use the language a lot better than I did before and now I have a working website that is entirely my own creation!
 ### Jan 27
 `curl` is basically a command line browser. `curl -v` lets you see all the communication between your device and whatever url you put in after curl -v. Do `curl -v http://URL
 - https is secure, http is not secure.
@@ -163,6 +216,7 @@ Application (http), Transport (TCP- slower but more methodical, UDP-faster but m
 - Web server has services within it.
 - Multiple ports on a server. Port 443 is a secure http connection. You can have a gateway service on your web server that links to different ports ig.
 - servers can talk to other servers. service are just programs in the servers
+
 ## Console Commands
 `cd` -change directory  
 `mdkir` make directory  
@@ -179,7 +233,7 @@ ommitting the slash means the path is relative to your current directory
 `cd ..` move back up one directory  
 `ls` list the stuff in the directory  
 `ls -l` list in more detail  
-`ls -al` list all files in more detail even the hidden ones  
+`ls -la` list all files in more detail even the hidden ones  
 `--help` get info on command  
 `man` get info on command  
 `mkdir newDirectory`  
@@ -196,15 +250,16 @@ directory -> staged -> .git
 git add puts on stage, git commit puts in into the repository, git checkout moves to a previous commit. Think about Github as like another person on a computer. It's just a server somewhere that holds git and takes your commits and passes them back out. git push - pushes a commit to a clone of your repository (usually to GitHub). git pull - pulls the newest commits down.
 - When you create a repository you don't want git to be bugging you about putting things in the commit or something. Anything you put in the gitignore file won't be put in the repo.
 ## Development and Production environments
--my development environment is my computer and my production environment is AWS
--Never develop in the production environment
--Deployment of app should be done via a CI (continuous integration) process- this checkouts the application code, links it, builds it, tests it, stages it, tests it more, and finally pushes the application to the production environment and notifies.
--we are gonna use a simple console shell script for our CI process.
--to deploy run `./deployService.sh -k ~/prod.pem -h yourdomain.click -s simon` or something akin to that.
+-my development environment is my computer and my production environment is AWS  
+-Never develop in the production environment  
+-Deployment of app should be done via a CI (continuous integration) process- this checkouts the application code, links it, builds it, tests it, stages it, tests it more, and finally pushes the application to the production environment and notifies.  
+-we are gonna use a simple console shell script for our CI process.  
+-to deploy run `./deployService.sh -k ~/prod.pem -h yourdomain.click -s simon` or something akin to that.  
 k provides the credential file to access production environment, h is domain name of prod environment, s is the name of the app you are deploying (simon or startup).
 
 ## The internet
 IP addresses are the the addresses of servers. IP addresses are how computers find each other. We don't usually use the string of numbers and so we just use like google.com. Computers we use are clients bc they are not directly connected to the internet. They use an ISP (internet service provider). When info is transfered on the internet it's transferred in packages that are reassembled at arrival. IP addresses also apply to things indirectly connected to the internet. Anywhere two or more parts of the internet intersect, there is a router. Routers direct our packets of info around. When you send something, the info is wrapped in layers of all the IP addresses it passes through (routers have IP addresses). Info can go back to where it came from by looking at the IPs it's wrapped in and retracing its steps.
+
 ### TCP/IP layers
 1. Application- user functionality, web (http), mail, files, remote shell, chat. 
 2. Transport (TCP)- breaks application layer into small chunks and sends the data.
@@ -293,57 +348,57 @@ the above means:
 * body - content
 * main- main content excluding headers, footers, navigation helps, etc.
 #### Attributes
-attributes describe specific details of the element. ex. the `id` attribute gives a unique ID to the element so you can distinguish it from other elements.
-- `class` attribute- designates element as beeing classified into a named group of elements. 
--written in the element tag with aname followed by an optional value. 
-`<p id="hello" class="greeting">Hello world</p>`
+attributes describe specific details of the element. ex. the `id` attribute gives a unique ID to the element so you can distinguish it from other elements.  
+- `class` attribute- designates element as beeing classified into a named group of elements.   
+-written in the element tag with aname followed by an optional value.   
+`<p id="hello" class="greeting">Hello world</p>`  
 ##### Common Input attributes
-`name` name of imput. submitted as the name of the input if used in a form, can be used to reference the element in javascript
-`disabled` disables the ability for the user to interact with the input
-`value` the initial value of the input
-`required` signifies that a value is required in order to be valid
-`for` associates label with a control element
-`placeholder` - used to make a phantom value in an input box
+`name` name of imput. submitted as the name of the input if used in a form, can be used to reference the element in javascript  
+`disabled` disables the ability for the user to interact with the input  
+`value` the initial value of the input  
+`required` signifies that a value is required in order to be valid  
+`for` associates label with a control element  
+`placeholder` - used to make a phantom value in an input box  
 
 #### Hyperlinks
 -represented with an anchor `a` element that has an attribute containing the address of the hyperlink reference.
 - ex. `<a href="https://byu.edu">Go to the Y</a>`
 
 #### Common elements
-`html` page container
-`head` header information
-`title` title of page
-`meta` metadata for the page such as character set or viewport settings
-`script` JavaScript reference. 
-`include` external content reference
-`body` entire content body of page
-`header` header of main content
-`footer` footer of main content
-`nav` navigational inputs
-`main` main content of page
-`section` a section of the main content
-`aside` aside content from the main content
-`div` a block division of content
-`span` an inline span of content
-`h<1-9>` text heading. From h1, the highest level, down to h9, the lowest level
-`p` a paragraph of text
-`b` bring attention
-`table` table
-`tr` table row
-`th` table header
-`td` table data
-`ol, ul` ordered or unordered list
-`li` list item
-`a` anchor the text to a hyperlink
-`img` graphical image reference
-`dialog` interactive componenet such as a confirmation
-`form` a collection of user input
-`input` user input field
-`audio` audio content
-`video` video content
-`svg` scalable vector graphic content
-`iframe` inline fram of another HTML page
-#### Comments
+`html` page container  
+`head` header information  
+`title` title of page  
+`meta` metadata for the page such as character set or viewport settings  
+`script` JavaScript reference.   
+`include` external content reference  
+`body` entire content body of page  
+`header` header of main content  
+`footer` footer of main content  
+`nav` navigational inputs  
+`main` main content of page  
+`section` a section of the main content  
+`aside` aside content from the main content  
+`div` a block division of content  
+`span` an inline span of content  
+`h<1-9>` text heading. From h1, the highest level, down to h9, the lowest level  
+`p` a paragraph of text  
+`b` bring attention  
+`table` table  
+`tr` table row  
+`th` table header  
+`td` table data  
+`ol, ul` ordered or unordered list  
+`li` list item  
+`a` anchor the text to a hyperlink  
+`img` graphical image reference  
+`dialog` interactive componenet such as a confirmation  
+`form` a collection of user input  
+`input` user input field  
+`audio` audio content  
+`video` video content  
+`svg` scalable vector graphic content  
+`iframe` inline fram of another HTML page  
+#### Comments  
 `<!-- commented text -->` this will be ignored when the browser renders the doc
 #### Special Characters
 - if you want to use special characters you need to escape them using entity syntax.
@@ -355,71 +410,73 @@ attributes describe specific details of the element. ex. the `id` attribute give
 😀 - `&#128512;`
 etc.
 #### HTML Versions
-Year	Version	Features
-1990	HTML1	format tags
-1995	HTML2	tables, internationalization
-1997	HTML3	MathML, CSS, frame tags
-1999	HTML4	external CSS
-2014	HTML5	email, password, media, and semantic tags
+Year	Version	Features  
+1990	HTML1	format tags  
+1995	HTML2	tables, internationalization  
+1997	HTML3	MathML, CSS, frame tags  
+1999	HTML4	external CSS  
+2014	HTML5	email, password, media, and semantic tags  
 
 #### Rendering HTML
 - You can save any HTML file to your disk and then open the file in your browser or you can open it in VScode and use the Live Server extension to display html. 
 #### HTML Structure
 #### HTML Input Elements
-`form` input container and submission
-`fieldset` labeled input grouping
-`input` multiple types of user input
-`select` selection dropdown
+`form` input container and submission  
+`fieldset` labeled input grouping  
+`input` multiple types of user input  
+`select` selection dropdown  
 ex.
-  `<select id="select" name="varSelect">`
-    `<option selected>option1</option>`
-    `<option>option2</option>`
-    `<option>option3</option>`
-`optgroup` grouped selection dropdown
-`option` selection option
-`textarea` multiline text input
-`label` individual input label
-`output` output of input
-`meter` display value with a known range
+```
+  <select id="select" name="varSelect">
+    <option selected>option1</option>
+    <option>option2</option>
+    <option>option3</option>
+```
+`optgroup` grouped selection dropdown  
+`option` selection option  
+`textarea` multiline text input  
+`label` individual input label  
+`output` output of input  
+`meter` display value with a known range  
 * form used to be necessary but since Javascript, it has lost much of its usefulness.
 ##### To set the type of Input:
-- use the type attribute
-text - single line textual value
-password - obscured password
-email - email address
-tel - telephone number
-url - url address
-number - numerical value
-checkbox - inclusive selection
-radio - exclusive selection
-range - range limited number
-date - year, month, day
-datetime-local - date and time
-month - year, month
-week - week of year
-color - color
-file - local file
-submit - button to trigger form submission
+- use the type attribute  
+text - single line textual value  
+password - obscured password  
+email - email address  
+tel - telephone number  
+url - url address  
+number - numerical value  
+checkbox - inclusive selection  
+radio - exclusive selection  
+range - range limited number  
+date - year, month, day  
+datetime-local - date and time  
+month - year, month  
+week - week of year  
+color - color  
+file - local file  
+submit - button to trigger form submission  
 #### HTML Media elements
 `img, audio, and video` are just references to external files.
 `svg and canvas` internal media elements that contain code for rendering a visual image that can even be animated
 * media tags that reference external media all take URL as an attribute. you can put the url as a relative path or a full path. Make the path as relative as possible so that if you change your code it doesn't affect the url.
-`img` - specify the `src` attribute with the url to the source image. specify an `alt` attribite to describe the image for accessibility.
-`audio` - uses src, include `controls` if you want the user to be able to control the audio playback (it makes a visual representation of the audio) `autoplay` starts the audio as soon as the audio file is loaded `loop` keeps playing it over and over
-`video` - uses src, controls, and autoplay, you may need to include `crossorigin="anonymous"` if you are requesting files from a different domain than the one serving your content
-`svg` - scalable vector graphics, allows you to render graphics inline in your HTML. Lots of attributes yeah
-`canvas` - facilitates 2D drawing and animation, requires javascript to work
+`img` - specify the `src` attribute with the url to the source image. specify an `alt` attribite to describe the image for accessibility.  
+`audio` - uses src, include `controls` if you want the user to be able to control the audio playback (it makes a visual representation of the audio) `autoplay` starts the audio as soon as the audio file is loaded `loop` keeps playing it over and over  
+`video` - uses src, controls, and autoplay, you may need to include `crossorigin="anonymous"` if you are requesting files from a different domain than the one serving your content  
+`svg` - scalable vector graphics, allows you to render graphics inline in your HTML. Lots of attributes yeah  
+`canvas` - facilitates 2D drawing and animation, requires javascript to work  
 #### SVG Path Code
-M = moveto
-L = lineto
-H = horizontal lineto
-V = vertical lineto
-C = curveto
-S = smooth curveto
-Q = quadratic Bézier curve
-T = smooth quadratic Bézier curveto
-A = elliptical Arc
-Z = closepath
+M = moveto  
+L = lineto  
+H = horizontal lineto  
+V = vertical lineto  
+C = curveto  
+S = smooth curveto  
+Q = quadratic Bézier curve  
+T = smooth quadratic Bézier curveto  
+A = elliptical Arc  
+Z = closepath  
 
 ### Command for running simon
 ./deployFiles.sh -k ~/keys/production.pem -h yourdomain.click -s simon
@@ -575,10 +632,10 @@ figure out the other ig.
 - children inside of a flex display are given the `flex` property which tells the browser what proportion of the available space each child will get.
 `flex-direction` can take on 4 values. default is row (left to right), then row-reverse (right to left) then column and column-reverse. These represent the main axis of ordering the flex children.
 #### Design Layout
-`text-align: center` can center your text horizontally
-`line-height: (insert 1/2height of element)` will center the text vertically
-`align-items: center` aligns items along the cross axis of the flex container; centers them
-`justify-content: center` aligns items along the main axis of the flex container; centers them.
+`text-align: center` can center your text horizontally  
+`line-height: (insert 1/2height of element)` will center the text vertically  
+`align-items: center` aligns items along the cross axis of the flex container; centers them  
+`justify-content: center` aligns items along the main axis of the flex container; centers them.  
 ### Debugging CSS
 use browser developer tools.
 ### CSS Frameworks
@@ -620,55 +677,57 @@ margin: 50% - the margin will be 50% the width of its containing block.
 - border-radius: 50% will make a circle; it gets complicated after that with all the values
 - width: 100% - sets the width equal to the width of the parent element
 ### CSS Units and Definitions
-80vmin - 80 percent of the viewport's smaller dimension
-px - pixels
-vh - viewport height
-vw -viewport width
-em - the font size of the parent element
-rem - the font size of the root element.
-root element - the highest level element in the document, usually the `<html>` tag
-content box - the element; default size of element;
-padding - the next out, clears an area around the content. The padding is transparent; default 0
-border- the edge; default 0
-margin- empty space between elements if you add it; default 0
-fr - only availabe in display: grid; means fraction of available space. 1fr means all of the available space. You can also combine them in rations so 1fr and 2fr would split the space into three parts and give 1 part to an element and 2 parts to another
+80vmin - 80 percent of the viewport's smaller dimension  
+px - pixels  
+vh - viewport height  
+vw -viewport width  
+em - the font size of the parent element  
+rem - the font size of the root element.  
+root element - the highest level element in the document, usually the `<html>` tag  
+content box - the element; default size of element;  
+padding - the next out, clears an area around the content. The padding is transparent; default 0  
+border- the edge; default 0  
+margin- empty space between elements if you add it; default 0  
+fr - only availabe in display: grid; means fraction of available space. 1fr means all of the available space. You can also combine them in rations so 1fr and 2fr would split the space into three parts and give 1 part to an element and 2 parts to another  
 
 ### Bootstrap stuff
 - container-fluid - the container will span the entire width of the viewport.
 - container - has a fixed left and right margin
 ## Javascript
 include directly in the HTML file or use a separate file and the src parameter in HTML `<script>` element.
-declare variable with `let` or `const`
-Null	The type of a variable that has not been assigned a value.
-Undefined	The type of a variable that has not been defined.
-Boolean	true or false.
-Number	A 64 bit signed number.
-BigInt	A number of arbitrary magnitude.
-String	A textual sequence of characters.
-Symbol	A unique value.
-Objects in JavaScript
-Object	A collection of properties represented by name value pairs. Values can be of any type.	{a:3, b:'fish'}
-Function	An object that has the ability to be called.	function a() {}
-Date	Calendar dates and times.	new Date('1995-12-17')
-Array	An ordered sequence of any type.	[3, 'fish']
-Map	A collection of key value pairs that support efficient lookups.	new Map()
-JSON	A lightweight data-interchange format used to share information across programs.	{"a":3, "b":"fish"}
-`===` is the equality variable in this language (does not do type conversion)
-`==` does type conversion and can do unexpected things
-strings can do concatenation and equality
-condition ? value if true : value if false  (the ternary operator - ?)
-same comparison for and an or as C++
+declare variable with `let` or `const`  
+Null	The type of a variable that has not been assigned a value.  
+Undefined	The type of a variable that has not been defined.  
+Boolean	true or false.  
+Number	A 64 bit signed number.  
+BigInt	A number of arbitrary magnitude.  
+String	A textual sequence of characters.  
+Symbol	A unique value.  
+Objects in JavaScript  
+Object	A collection of properties represented by name value pairs. Values can be of any type.	{a:3, b:'fish'}  
+Function	An object that has the ability to be called.	function a() {}  
+Date	Calendar dates and times.	new Date('1995-12-17')  
+Array	An ordered sequence of any type.	[3, 'fish']  
+Map	A collection of key value pairs that support efficient lookups.	new Map()  
+JSON	A lightweight data-interchange format used to share information across programs.	{"a":3, "b":"fish"}  
+`===` is the equality variable in this language (does not do type conversion)  
+`==` does type conversion and can do unexpected things  
+strings can do concatenation and equality  
+condition ? value if true : value if false  (the ternary operator - ?)  
+same comparison for and an or as C++  
 ### Function
-parameters can have default values
-Anonymous functions - functions assigned to a variable. these are very weird. 
+parameters can have default values  
+Anonymous functions - functions assigned to a variable. these are very weird.   
+```
 const add = function (a, b) {
   return a + b;
 };
-Then you can call add as if it was the function name
-You can pass functions to other functions as parameters
-basically you can do anything to a function you can do to a variable and I don't like that at all
-Inner functions - functions can be declared within other functions. YUCK.
-Arrow functions - (optional parameters) => return statement (use brackets if you have more than one statment of executing code in your arrow function)
+```
+Then you can call add as if it was the function name  
+You can pass functions to other functions as parameters  
+basically you can do anything to a function you can do to a variable and I don't like that at all  
+Inner functions - functions can be declared within other functions. YUCK.  
+Arrow functions - (optional parameters) => return statement (use brackets if you have more than one statment of executing code in your arrow function)   
 
 ### Loops
 same for, while, do while
@@ -1266,12 +1325,12 @@ common option values;
 
 Some common values for the mode argument include:
 
-u: Sets the permissions for the file owner.
-g: Sets the permissions for the group owner.
-o: Sets the permissions for everyone else.
-r: Gives read permission.
-w: Gives write permission.
-x: Gives execute permission.
+u: Sets the permissions for the file owner.  
+g: Sets the permissions for the group owner.  
+o: Sets the permissions for everyone else.  
+r: Gives read permission.  
+w: Gives write permission.  
+x: Gives execute permission.  
 
 
 sudo deploy.sh //doesn't make any sense
