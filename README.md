@@ -1,9 +1,434 @@
 # NOTES
+
+## Research further: 
+- [ ] console commands
+- [ ] git ignore files
+- [ ] what chmod stands for
+
+
+## Random things: 
+
+### SSH into your server
+`➜  ssh -i [key pair file] ubuntu@[ip address or your domain name]`
+`exit` to exit the shell
+
+### chmod commands
+Order: User, Group, Everyone  
+
+| Numbers |  Notation |  Permissions  | 
+| ------- | --------- | ------------- | 
+|    0    |    ---    |     None      | 
+|    1    |    --x    |    Execute    |  
+|    2    |    -w-    |     Write     |  
+|    3    |    -wx    | Write/Execute | 
+|    4    |    r--    |      Read     | 
+|    5    |    r-x    | Read/Execute  |  
+|    6    |    rw-    |   Read/Write  |  
+|    7    |    rwx    |Read/Write/Exec| 
+
+### Keyboard shortcut to select multiple lines to edit in VS Code
+`alt` and select
+
+# The Console
+
+📖 **Deeper dive reading**: [MDN Command line crash course](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line)
+
+## Common commands
+- **pwd** - Check present working directory
+- **echo** - Output the parameters of the command
+- **cd** - Change directory
+- **mkdir** - Make directory
+- **rmdir** - Remove directory
+- **rm** - Remove file(s)
+- **mv** - Move file(s)
+- **cp** - Copy files
+- **ls** - List files
+- **ls -la** - List all files in long format (hidden ones that start with .)
+- **curl** - Command line client URL browser
+- **grep** - Regular expression search
+- **find** - Find files
+- **top** - View running processes with CPU and memory usage
+- **df** - View disk statistics
+- **cat** - Output the contents of a file
+- **less** - Interactively output the contents of a file
+- **wc** - Count the words in a file
+- **ps** - View the currently running processes
+- **kill** - Kill a currently running process
+- **sudo** - Execute a command as a super user (admin)
+- **ssh** - Create a secure shell on a remote computer
+- **scp** - Securely copy files to a remote computer
+- **history** - Show the history of commands
+- **ping** - Check if a website is up
+- **tracert** - Trace the connections to a website
+- **dig** - Show the DNS information for a domain
+- **man** - Look up a command in the manual
+- **touch** - Creates a new empty file in the current directory (or update the timestamp if it does exist)
+
+You can also chain the input and output of commands using special characters
+
+- `|` - Take the output from the command on the left and _pipe_, or pass, it to the command on the right
+- `>` - Redirect output to a file. Overwrites the file if it exists
+- `>>` - Redirect output to a file. Appends if the file exists
+
+For example, you can list the files in a directory, pipe it into `grep` to search for files created in Nov, and then pipe that into `wc` to count the number of files found with a date of Nov.
+
+```
+ls -l | grep ' Nov ' | wc -l
+```
+
+There are also keystrokes that have special meaning in the console.
+
+- `CTRL-R` - Use type ahead to find previous commands
+- `CTRL-C` - Kill the currently running command
+
+# Git
+
+## Git Commands
+
+Check your git version
+```sh
+➜  git --version
+```
+Initialize a directory  
+```sh
+➜  mkdir playingWithGit
+➜  cd playingWithGit
+➜  git init
+```
+
+If you list all files in the directory you will see that you now have a hidden directory named `.git`. This is where all versions get stored.
+
+```sh
+➜  ls -la
+total 0
+drwxr-xr-x   3 lee  staff    96 Dec  1 22:59 .
+drwxr-xr-x+ 54 lee  staff  1728 Dec  1 23:00 ..
+drwxr-xr-x   9 lee  staff   288 Dec  1 22:59 .git
+```
+
+Now use the `echo` command to create a file so that we can see how versioning works. After creating the new file, use `git status` to tell you what git is doing.
+
+```sh
+➜ echo hello world > hello.txt
+➜ git status
+
+On branch master
+No commits yet
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	hello.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+```
+
+Git status tells you that it detects a new file named `hello.txt`, but it isn't currently tracking versions for that file. To begin tracking versions you need to add it. Usually you track all files in a repository directory and so you can tell Git to track everything that it doesn't know about with `git add .`. Follow this with another call to `git status`.
+
+```sh
+➜  git add .
+➜  git status
+
+On branch master
+No commits yet
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+	new file:   hello.txt
+```
+
+Now Git tells us that it has `staged` the file `hello.txt` and it is ready to be committed as a version in the repository. We commit a version with the `commit` command. We always want to have a meaningful comment about the version we are committing and so we use the `-m` parameter to provide a message that will live with the version. Follow this with another call to `git status`.
+
+```sh
+➜  git commit -m "initial draft"
+[master (root-commit) d43b07b] initial draft
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hello.txt
+
+➜  git status
+On branch master
+nothing to commit, working tree clean
+```
+
+Congratulations! You have just committed your first file to a Git repository. Also, note that the point of the stage (add) step, is so that you can commit some files while still leaving other modified file out of the commit.
+
+Let's make an edit to our file and commit it again. This time we will tell Git that we want to add all the tracked modified files to our commit by including the `-a` parameter along with our message parameter.
+
+```sh
+➜  echo goodbye world > hello.txt
+
+➜  git commit -am "changed greeting to reflect the present mood"
+
+[master e65f983] changed greeting to reflect the present mood
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+```
+
+view the versions with the `git log` command.
+
+```sh
+➜  git log
+
+commit e65f9833ca8ee366d0d9c1676a91b1a977dab441 (HEAD -> master)
+Author: Lee
+Date:   Thu Dec 1 23:32:22 2022 -0700
+
+    changed greeting to reflect the present mood
+
+commit d43b07b8890f52defb31507211ba78785bf6dccf
+Author: Lee
+Date:   Thu Dec 1 23:29:11 2022 -0700
+
+    initial draft
+```
+
+This shows both commits with the associated comments.
+
+## Commit SHA
+
+Every commit has a unique identifier that is generated by hashing the file along with the timestamp using the SHA hashing algorithm. You can always refer to a specific commit in your version history by using its SHA. For example, if we want to temporarily switch back to a previous version to see what it contains we can use the `checkout` command. You only need to provide the first few characters of the SHA.
+
+```sh
+➜  git checkout d43b07b8890f
+
+Note: switching to 'd43b07b8890f'.
+HEAD is now at d43b07b initial draft
+
+➜  cat hello.txt
+hello world
+```
+
+The above output omits a big message saying that you are no longer looking at the latest version, but the important thing is that you can see that we are now looking at our old version. To get back to the top of the version chain, use the `checkout` command and reference the branch name, which is by default `master`.
+
+```sh
+➜  git checkout master
+Previous HEAD position was d43b07b initial draft
+Switched to branch 'master'
+
+➜  cat hello.txt
+goodbye world
+```
+
+Now we are back to our latest version.  
+
+A commit is a full snapshot of what was staged from your directory at the time of the commit. That means all of the files contained in the commit were reverted when you executed the checkout command. Since we only had one file in our commit, it looks like we are only flipping that file around, but basically you can think of it as a time machine for the entire directory.
+
+## Diff
+
+Most of the time you don't want to reverse back to an earlier commit. Instead you just want to compare the differences between commits. We can do that with the `diff` command. You can specify two SHAs that you would like to compare, or you can use the HEAD variable which points to the top of the commit change. To refer to earlier commits you just add `~` and the numerical distance from head that you want to reference. In this case we will compare HEAD and HEAD~1.
+
+```sh
+➜  git diff HEAD HEAD~1
+```
+
+```diff
+diff --git a/hello.txt b/hello.txt
+index 3b18e51..eeee2af 100644
+--- a/hello.txt
++++ b/hello.txt
+@@ -1 +1 @@
+-hello world
++goodbye world
+```
+
+You can see that we made a change to `hello.txt` by removing `hello world` and adding `goodbye world`.
+
+## Branches
+
+Git supports the ability to branch your code. This allows you to work on variations of the code while still allowing progress on the main branch. For example, if you wanted to work on a new feature named `A` without interrupting work on the master branch, you would use the `git branch A` command and start working on the `A` branch with the `git checkout A` command. Now commits can be down to both the master and the `A` branch. When you want to combine the work done on both branches you us checkout the master branch and execute `git merge A`. If you decide you want to abandon the new feature then you just don't ever merge it back into the master branch.
+
+Here is a demonstration of this working on the visualization tool provided by [git-school.github.io](https://git-school.github.io/visualizing-git/).
+
+
+## Binary files
+
+You can store any type of file in Git, but be aware that if you store large binary files, such as images or videos, you are storing a copy of that file each time you make a change to it. For example, suppose you use Git to track the changes you make to a video production project. Every time you save a change to your 10 GB video file you store a complete copy of the file. That means 10 commits of the video file will store 100 GB of data in your repository.
+
+# GitHub
+
+- [GitHub personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+
+## Making changes
+
+Now that there is a commit that GitHub has that you do not have in your development environment. If we run the `fetch` Git command, you will get the latest information about the changes on GitHub without actually changing your local repository. We then run the `status` Git command to see the differences between the clones and see that we are missing a commit. You can pull it down using the `pull` Git command. 
+
+```sh
+➜  git fetch
+➜  git status
+Your branch is behind 'origin/main' by 1 commit, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+
+➜  git pull
+Updating d13a9ce..cafe81a
+Fast-forward
+ README.md | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+```
+
+After running the pull command, your development clone and the GitHub clone are now the same.
+
+## Handling merge conflicts
+
+By pushing and pulling often, everyone keeps an up to date copy of the repository. This is important so that you don't run into merging problems caused by two peers modifying the exact same code. Merging only becomes something you have to deal with when two people modify the exact same line of code. However, when you have two peers working together you are always going to have a merge conflict at some point in time and so let's discuss how to handle this.
+
+We can simulate a merge conflict by editing a line in a file and committing the file in your development environment, and before pushing that change, modifying the same line using GitHub. Now, run `fetch` and `status` again in your console.
+
+```sh
+➜  git fetch
+➜  git status
+Your branch and 'origin/main' have diverged,
+and have 1 and 1 different commits each, respectively.
+  (use "git pull" to merge the remote branch into yours)
+```
+
+This shows that the cloned repositories have diverged from each other. Normally this is fine and we can just push and pull the different commits, but if we do that this time we will get an error because the exact same line was changed in the two different commits.
+
+```sh
+➜  git pull
+
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+Automatic merge failed; fix conflicts and then commit the result.
+```
+
+We now need to resolve the merge conflict that it says has happened with our `README.md` file. If you are using VS Code with the GitLens extension installed it will visually walk you through this process. However, so you can understand what is going on, we will do this using the console. The first step is to open up `README.md` in an editor. You will see that git has injected lines that highlight where the conflict is. Both your local change and the change made on GitHub are included.
+
+```diff
+An example start up application
+
+Change from my development environment!
+
+Change from GitHub
+
+<<<<<<< HEAD
+Conflict change made in development environment
+=======
+Conflict change made in GitHub
+>>>>>>> b9f4c53c91eff509993d7291e60148f903827de0
+```
+
+We resolve the conflict by modifying the file to remove the textual conflict delimiters and modifying the file to keep the changes we want. When we are done editing, our file contains what we want from both commits.
+
+```md
+# startup-example
+
+An example start up application
+
+Change from my development environment and from GitHub
+```
+
+Now that the conflict is resolved we commit our resolution and push up the result.
+
+```sh
+➜  git commit -am "merge(notes) combined both edits"
+➜  git push
+```
+
+If you go look at the file again on GitHub you will see the additional commit in the history and the result of our merge in the file content.
+
+## Forks
+
+ A fork is similar to cloning a repository to your development environment, but it clones to GitHub instead. Then pull the fork down to your development environment to work on it. The fork maintains a link to the upstream (original) repository that allows you to easily pull down updates and merge them with your fork. A fork also allows you to create a pull request in order to push suggested changes to the original repository.
+
+## Pull requests
+
+GitHub allows you to create a fork of any repository on GitHub. You just push the `fork` button from the repository's GitHub page. You can then make modifications to the repository fork and push the changes as a pull request. This notifies the original repository's owner that a request is being made to enhance the original repository. The owner can review your changes and if appropriate commit the changes into the original. This is how open source communities manage development from a volunteer group of global developers.
+
+
+# Domain names
+
+Domain names are broken up into a root domain, with one or more possible subdomain prefixes. The root domain is represented by a secondary level domain and a top level domain. The top level domain (TLD) represent things like `com`, `edu`, or `click`. So a root domain would look something like `google.com`, or `cs260.click`. The [possible list of TLDs](https://www.icann.org/resources/pages/tlds-2012-02-25-en) is controlled by ICANN, one of the governing boards of the internet.
+
+You can get information about a domain name from the domain name registry using the `whois` console utility.
+
+```yaml
+➜  whois byu.edu
+
+Domain Name: BYU.EDU
+
+Registrant:
+	Brigham Young University
+	3009 ITB
+	2027 ITB
+	Provo, UT 84602
+	USA
+
+Administrative Contact:
+	Mark Longhurst
+	Brigham Young University
+	Office of Information Technology
+	1208 ITB
+	Provo, UT 84602
+	USA
+	+1.8014220488
+	markl@byu.edu
+
+Technical Contact:
+	Brent Goodman
+	Brigham Young University
+	Office of Information Technology
+	1203J ITB
+	Provo, UT 84602
+	USA
+	+1.8014227782
+	dnsmaster@byu.edu
+
+Domain record activated:    19-Jan-1987
+Domain record last updated: 11-Jul-2022
+Domain expires:             31-Jul-2025
+```
+
+## DNS
+
+Every DNS server in the world references a few special DNS servers that are considered the `authoritative name servers` for associating a domain name with an IP address.
+
+The DNS database records that facilitate the mapping of domain names to IP addresses come in several flavors. The main ones we are concerned with are the `address` (`A`) and the `canonical name` (`CNAME`) records. An `A` record is a straight mapping from a domain name to IP address. A `CNAME` record maps one domain name to another domain name. This acts as a domain name alias. You would use a CNAME to do things like map `byu.com` to the same IP address as `byu.edu` so that either one could be used.
+
+When you enter a domain name into a browser, the browser first checks to see if it has the name already in its cache of names. If it does not, it contacts a DNS server and gets the IP address. The DNS server also keeps a cache of names. If the domain name is not in the cache, it will request the name from an `authoritative name server`. If the authority does not know the name then you get an unknown domain name error. If the process does resolve, then the browser makes the HTTP connection to the associated IP address.
+
+As you can see, there is a lot of levels of name caching. This is done for performance reasons, but it also can be frustrating when you are trying to update the information associated with your domain name. This is where the `time to live` (`TTL`) setting for a domain record comes into play. You can set this to be something short like 5 minutes or as long as several days. The different caching layers should then honor the TTL and clear their cache after the requested period has passed.
+
+### Additional DNS Record Types
+
+The additional NS and SOA type records that were listed for your domain name are important for working with DNS. These records were created automatically for you when you registered your domain name. The name server (NS) record contains the names of the authoritative name servers that authorize you to place DNS records in this DNS server. Those same authoritative name servers are listed with the registrar that you leased your domain name from. That way the authoritative name server can verify that the DNS records and the DNS registration match and are authorized to represent the domain name when defining DNS records. Otherwise a hacker could just add DNS records and take over your domain name.
+
+The start of authority (SOA) record provides contact information about the owner of this domain name.
+
+# Caddy (from the HTTPS, TLS, and web certs file)
+
+## Adding/Editing Service Subdomains
+
+1. ssh into your production environment server
+`➜  ssh -i [key pair file] ubuntu@[ip address or your domain name]`
+2. Edit Caddy's configuration (`Caddyfile`) file (in ubuntu user's home directory). Because this file is not owned by the root user, gonna have to sudo into it
+```
+➜ cd ~
+➜ sudo vi Caddyfile
+```
+3. Modify the rule for handling requests to port 80 (HTTP) to handle requests for your domain name. Not specifying a port makes the rule serve up files using port 443 (HTTPS)/any requrest to port 80 will redirect the browser to port 443.  
+Replace `:80` with your domain name (making sure to remove the colon).
+4. Modify the rules to make sure traffic is being routed to the desired subdomains  
+5. Save the file and exit VI `:wq`
+6. Restart Caddy so that your changes take effect. 
+`sudo service caddy restart` 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Hypertext Markup Language
 
 - [MDN HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
 - [W3C specification](https://html.spec.whatwg.org/multipage/) - This official specification is only for reference
-
 
 ## Elements and tags
 
@@ -36,7 +461,6 @@ One of the core features that made the web so successful was the ability to crea
 ```html
 <a href="https://byu.edu">Go to the Y</a>
 ```
-
 
 ## Common elements
 
@@ -100,6 +524,21 @@ HTML uses several reserved characters for defining its file format. If you want 
 | &#128512; | `&#128512;` |
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## FONTS
 Use https://fonts.google.com/ for free fonts
  example: 
@@ -107,6 +546,32 @@ Use https://fonts.google.com/ for free fonts
   body {
     font-family: 'Source Code Pro';
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Jenson's Midterm Review
 Q1:   HTML `<div>` does?        creates a division element  
@@ -270,6 +735,32 @@ ls lists contents of current directory
 ssh (secure shell) provides a secure encrypted connection between two hosts over an insecure network  
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Memory of Light's notes
 ## SIMON Feb 4 What I learned
 ./deployFiles.sh -k ~/keys/production.pem -h yourdomain.click -s simon
@@ -308,145 +799,7 @@ border- the edge; default 0
 margin- empty space between elements if you add it; default 0  
 fr - only availabe in display: grid; means fraction of available space. 1fr means all of the available space. You can also combine them in rations so 1fr and 2fr would split the space into three parts and give 1 part to an element and 2 parts to another
 
-### Jan 27
-`curl` is basically a command line browser. `curl -v` lets you see all the communication between your device and whatever url you put in after curl -v. Do `curl -v http://URL
-- https is secure, http is not secure.
-- Layers
-Application (http), Transport (TCP- slower but more methodical, UDP-faster but more error prone), Internet (IP), Link (Physical connection like wiring)
-- Web server has services within it.
-- Multiple ports on a server. Port 443 is a secure http connection. You can have a gateway service on your web server that links to different ports ig.
-- servers can talk to other servers. service are just programs in the servers
 
-## Console Commands
-`cd` -change directory  
-`mdkir` make directory  
-`touch` create files and modify metadata  
-`cp` copy files  
-`mv` move and rename files  
-`rm` delete files or directories  
-`curl` download files found at specific URLs  
-`grep` search for fragments of text inside larger bodies of text  
-`less` `cat` view file's contents  
-`awk` `tr` `sed` manipulate and transform streams of text  
-`cd path/to/directory`
-ommitting the slash means the path is relative to your current directory  
-`cd ..` move back up one directory  
-`ls` list the stuff in the directory  
-`ls -l` list in more detail  
-`ls -la` list all files in more detail even the hidden ones  
-`--help` get info on command  
-`man` get info on command  
-`mkdir newDirectory`  
-`rmdir directory`  
-`rmdir -rf` remove directory and everything in it  
-`touch fileName`  
-`mv current/file/path new/file/path`  
-`cp current/path new/path`  
-`*` is a wildcard character  
-tldr.sh explains a lot of commands  
-`wc` counts # of words, lines, chars, or bytes of whatever is inputted  
-## GitHub
-directory -> staged -> .git
-git add puts on stage, git commit puts in into the repository, git checkout moves to a previous commit. Think about Github as like another person on a computer. It's just a server somewhere that holds git and takes your commits and passes them back out. git push - pushes a commit to a clone of your repository (usually to GitHub). git pull - pulls the newest commits down.
-- When you create a repository you don't want git to be bugging you about putting things in the commit or something. Anything you put in the gitignore file won't be put in the repo.
-## Development and Production environments
--my development environment is my computer and my production environment is AWS  
--Never develop in the production environment  
--Deployment of app should be done via a CI (continuous integration) process- this checkouts the application code, links it, builds it, tests it, stages it, tests it more, and finally pushes the application to the production environment and notifies.  
--we are gonna use a simple console shell script for our CI process.  
--to deploy run `./deployService.sh -k ~/prod.pem -h yourdomain.click -s simon` or something akin to that.  
-k provides the credential file to access production environment, h is domain name of prod environment, s is the name of the app you are deploying (simon or startup).
-
-## The internet
-IP addresses are the the addresses of servers. IP addresses are how computers find each other. We don't usually use the string of numbers and so we just use like google.com. Computers we use are clients bc they are not directly connected to the internet. They use an ISP (internet service provider). When info is transfered on the internet it's transferred in packages that are reassembled at arrival. IP addresses also apply to things indirectly connected to the internet. Anywhere two or more parts of the internet intersect, there is a router. Routers direct our packets of info around. When you send something, the info is wrapped in layers of all the IP addresses it passes through (routers have IP addresses). Info can go back to where it came from by looking at the IPs it's wrapped in and retracing its steps.
-
-### TCP/IP layers
-1. Application- user functionality, web (http), mail, files, remote shell, chat. 
-2. Transport (TCP)- breaks application layer into small chunks and sends the data.
-3. Internet (IP)- makes the connections, devices need IP addresses to talk ex. 128.187.16.184 (BYU), we usually use domain names as a stand in for IP addresses. Doing a lookup in the DNS (Domain name system) can convert domains names to ip addresses. Use `dig byu.edu` to find the IP address for byu on your terminal. To connect a device first asks for a connection route which consists of hops around the network until a path is discovered and connection established. Then the Transport and application layers start exchanging data. To elucidate the path, use the `traceroute byu.edu` to see how your computer connects. If you run `traceroute` again you might get a different path since it's dynamic.
-4. Link- physical connections and hardware
-
-## Web Servers
-- Monolithic web servers- http software on a hardware server, olden days,  these are outdated now we have dynamic functionality with allows us to generate HTML on demand in reponse to users
-
-- Web and application service can be combined ig
-- Web service gateways- they run on the common http port 443. Since multiple web services can be run on the same computing device, different ports are used so a unique connection can be made to each. The gateway or reverse proxy basically listens on 443 and directs the user to the proper port.
-
-- Microservice- web service that provides a single functional purpose. Since functionality is partitioned it can be managed independently from other stuff in a large system. They are also good at handling large differences in user volume by just running more instances of the service.
-
-- I guess we're serverless now?? This section really made no sense.
-
-## Domain Names
-- Sometimes there are multiple IP addresses associated with one domain name. This is in case one address fails to make a valid connection. Domain name- text string listed in a database called domain name registry
-- root domain with subdomain prefixes. TLD (top level domain)- is things like com, edu, or gov
-so the root domain is like byu.edu, google.com, alabama.gov, etc. ICANN controls the list of TLDs.
-- you can have any number of subdomains off the root domain ex. highways.utah.fed.gov has three subdomains.
-- use `whois byu.edu` to get info about a domain name off the DNR.
-
-## DNS
-- once the domain is in the registry it is listed with a domain name system (DNS) server. You also need to lease the IP address. Every DNS on earth references a few special DNS servers that are the authority in charge of associating domain names with IP addresses. 
-- we mainly want to look at the address (A) and the canonical name (CNAME) records.
-- A- maps from domain name to IP address
-- CNAME- maps one dmain name to another domain name (this acts like a domain name alias). *CNAME could do things like map byu.com to the same IP as byu.edu so that either will get you to the website
-- enter domain name into browser, browser checks to see if it has the name already in its cache of names, if not it contacts a DNA server and gets IP address. If the DNS server doesn't have the domain name it requests the name from an `authoritative name server` DNS. If that doesn't know you get a unknown domain name error. If the name is found, your browser makes an Http connection to the associated IP address. 
-- TTL (time to live)- different caching layers will honor the TTL and clear cache after requested period has passed.
-- you can pay to lease an unused domain name.
-
-## Caddy
-web service gateway that listens for incoming Http requests. Caddy then serves up the files or routes the request to another web service. The ability to route requests is called a `gateway` or `reverse proxy` and allows you to exponse multiple web services as a single external web service. 
-- handles creation and rotation of web certificates which allows us to easily support https
-- serves up all our static html, css, and javascript files,
-
-### Important Caddy files
-* config file ~/Caddyfile
-- contains definition for routing http requests that caddy receives. Never modify this file manually except when you configure domain name of your server.
-* HTML files ~/public_html
-- directory of files caddy serves up when requests are made the root of your web server.
-## Web Services
-* NS record - name server record and basically provides legitimacy between the DNS records and registration so that it knows you have lisence to use your domain name. It contains the names of the authoritative name servers that authorize you to place DNS records in this DNS server. Those same authoritative name servers are listed with the registrar that you leased your domain name from. That way the server can verify that the DNS records and registration match and are authorized to represent the domain name when defining DNS records
-* SOA record - start of authority, provides contact info about the owner of the domain
-## Security
-- https - secure hypertext transport protocol (http with a secure connection before any data exchange happens). Secure connection means that data is encrypted using TLS protocol.
-- TLS works by negotiating a shared secret that is then used to encrypt data. (use curl -v to see this)
-- modern browsers expect servers to only use https and the next version of http will only support secure connections so any web application should be built with a secure connection.
-### Web Certificates
-- genertated by trusted 3rd party using encryption. Th issuer is responsible for verifying thst the certificated owner actually owns the domain name. So once I have a certificate, I can serve it from the server, the browser can see it and validate it using the public keys of whoever issued me the certificate.
-- Ever since `Let's Encrypt` was made, certificates have become free and the web has become a safer place.
-1. HTTPs request made
-2. Caddy asks let's encrypt to verify that domain for requested certificate is owned by requester. 
-3. L.E. tells requester to return a digitally signed response for a temporary URL when the request is made
-4. L.E. makes http request and if successful they give the certificate to the owner.
-     
-
-## HTML (Hypertext Markup Language)
-foundational content structure all web apps build on. Originally a format for web docs or pages. Now a page represents a single page application (SPA) or a large group of hyperlinked pages that form a multipage application (MPA).
-- text is valid HTML
-- always include `<!DOCTYPE html>` at the top of the HTML file. This tells the browser the type and version of the document
-#### Elements and tags
-Elements are represented with enclosing tags. 
-- tag- a delimited textual name we use to designate the start and end of an HTML element as it appears in an HTML document.
-- tags are delimited with < and >
-- the closing tag will have / before its name.
-`<p>Helloworld</p>` This denotes that this is a paragraph.
-- You could write a thing like this- 
-```
-<html>
-  <head>
-    <title>My First Page</title>
-  </head>
-  <body>
-    <main>
-      <p>Hello world</p>
-    </main>
-  </body>
-</html>
-```
-and it would appear the same as ours above because HTML is about structure.
-the above means:
-* html- about top level page structure
-* head - about page and page title
-* body - content
-* main- main content excluding headers, footers, navigation helps, etc.
 #### Attributes
 attributes describe specific details of the element. ex. the `id` attribute gives a unique ID to the element so you can distinguish it from other elements.  
 - `class` attribute- designates element as beeing classified into a named group of elements.   
@@ -460,9 +813,6 @@ attributes describe specific details of the element. ex. the `id` attribute give
 `for` associates label with a control element  
 `placeholder` - used to make a phantom value in an input box  
 
-#### Hyperlinks
--represented with an anchor `a` element that has an attribute containing the address of the hyperlink reference.
-- ex. `<a href="https://byu.edu">Go to the Y</a>`
 
 #### Common elements
 `html` page container  
@@ -790,630 +1140,8 @@ border- the edge; default 0
 margin- empty space between elements if you add it; default 0  
 fr - only availabe in display: grid; means fraction of available space. 1fr means all of the available space. You can also combine them in rations so 1fr and 2fr would split the space into three parts and give 1 part to an element and 2 parts to another  
 
-### Bootstrap stuff
-- container-fluid - the container will span the entire width of the viewport.
-- container - has a fixed left and right margin
-## Javascript
-include directly in the HTML file or use a separate file and the src parameter in HTML `<script>` element.
-declare variable with `let` or `const`  
-Null	The type of a variable that has not been assigned a value.  
-Undefined	The type of a variable that has not been defined.  
-Boolean	true or false.  
-Number	A 64 bit signed number.  
-BigInt	A number of arbitrary magnitude.  
-String	A textual sequence of characters.  
-Symbol	A unique value.  
-Objects in JavaScript  
-Object	A collection of properties represented by name value pairs. Values can be of any type.	{a:3, b:'fish'}  
-Function	An object that has the ability to be called.	function a() {}  
-Date	Calendar dates and times.	new Date('1995-12-17')  
-Array	An ordered sequence of any type.	[3, 'fish']  
-Map	A collection of key value pairs that support efficient lookups.	new Map()  
-JSON	A lightweight data-interchange format used to share information across programs.	{"a":3, "b":"fish"}  
-`===` is the equality variable in this language (does not do type conversion)  
-`==` does type conversion and can do unexpected things  
-strings can do concatenation and equality  
-condition ? value if true : value if false  (the ternary operator - ?)  
-same comparison for and an or as C++  
-### Function
-parameters can have default values  
-Anonymous functions - functions assigned to a variable. these are very weird.   
-```
-const add = function (a, b) {
-  return a + b;
-};
-```
-Then you can call add as if it was the function name  
-You can pass functions to other functions as parameters  
-basically you can do anything to a function you can do to a variable and I don't like that at all  
-Inner functions - functions can be declared within other functions. YUCK.  
-Arrow functions - (optional parameters) => return statement (use brackets if you have more than one statment of executing code in your arrow function)   
 
-### Loops
-same for, while, do while
-new loops:
-`for in`
-const obj = { a: 1, b: 'fish' };
-for (const name in obj) {
-  console.log(name);
-}  note that for arrays the obj. name will output an index.
-`for of`
-The for of statement iterates over an iterable's (Array, Map, Set, ...) property values.
-
-const arr = ['a', 'b'];
-for (const val of arr) {
-  console.log(val);
-}
-// OUTPUT: 'a'
-// OUTPUT: 'b'
-### Array Functions
-push	Add an item to the end of the array	a.push(4)  
-pop	Remove an item from the end of the array	x = a.pop  
-slice	Return a sub-array	a.slice(1,-1)  
-sort	Run a function sort an array in place	a.sort((a,b) => b-a)  
-values	Creates an iterator for use with a for of loop	for (i of a.values()) {...}  
-find	Find the first item satisfied by a test function	a.find(i => i < 2)  
-forEach	Run a function on each array item	a.forEach(console.log)  
-reduce	Run a function to reduce each array item to a single item	a.reduce((a, c) => a + c)  
-map	Run a function to map an array to a new array	a.map(i => i+i)  
-filter	Run a function to remove items	a.filter(i => i%2)  
-every	Run a function to test if all items match	a.every(i => i < 3)  
-some	Run a function to test if any items match	a.some(i => 1 < 1)  
-### Functions
-console.log() - outputs string to console  
-console.functionName() - does something with the developer console (not the screen)  
-console.time()  
-console.timeEnd() - wrap your code with these two functions to see how long it takes  
-console.count() - to see how many times a block of code is called.  
-```
-function join(a, b) {
-  return a + ' ' + b;
-}
-```
-That is for writing your own functions  
-end lines with ;  
-`onclick` attribute in HTML is followed by a value that specificies what Javacode to call.  
-When the some() method is called, it iterates through each element in the numbers array, and for each element, it calls the callback function with that element as the argument.  
-Array.from(iterable object like a string) - turns it into an array;  
-Math.floor() rounds a number down to the nearest int  
-Math.random() generates a random number  
-setTimeout(() => function to be executed after time, time to delay)  
-
-### Objects and Classes and Inheritance
-Function	Meaning
-.entries	Returns an array of key value pairs
-.keys	Returns an array of keys
-.values	Returns an array of values
-You can assign random properties to the object
-function Person(name) {
-  return {
-    name: name,
-    log: function () {
-      console.log('My name is ' + this.name);
-    },
-  };
-}
-
-const p = new Person('Eich');
-p.log();
-// OUTPUT: My name is Eich
-
-class Person {
-  constructor(name) {
-    this.name = name;
-  }
-
-  log() {
-    console.log('My name is ' + this.name);
-  }
-}
-
-const p = new Person('Eich');
-p.log();
-You can make class functions and variables private by putting #before them.
-
-Inheritance:
-
-class Person {
-  constructor(name) {
-    this.name = name;
-  }
-
-  print() {
-    return 'My name is ' + this.name;
-  }
-}
-
-class Employee extends Person {
-  constructor(name, position) {
-    super(name);
-    this.position = position;
-  }
-
-  print() {
-    return super.print() + '. I am a ' + this.position;
-  }
-}
-
-const e = new Employee('Eich', 'programmer');
-console.log(e.print());
-// OUTPUT: My name is Eich. I am a programmer
-
-super lets you reference the parent function. extends is the way you define inheritance in Javascript
-#### Objects
-3 ways to make an object;
-1) define an object literal
-`object = {property: value, property: value, etc...}`
-2) create an instance of Object
-`let objectName = new Object();`
-then you set the property's and values later.
-ojectName.val = x
-objectName.demon = bahamut
-etc..
-3) Use an Object Constructor;
-function objectName(id, name, salary){
-  this.id = id;
-  this.name = name;
-  this.salary = salary;
-}
-### JSON
-JSON doc contains one of the following data types: string, bool, array, number, object, null
-Objects contain zero or more key value pairs. The key is always a string, and the value must be one of the valid JSON data types. Key value pairs are delimited with commas. Curly braces delimit an object, square braces and commas delimit arrays, and strings are always delimited with double quotes.
-Converting to JavaScript
-You can convert JSON to, and from, JavaScript using the JSON.parse and JSON.stringify functions.
-
-const obj = { a: 2, b: 'crockford', c: undefined };
-const json = JSON.stringify(obj);
-const objFromJson = JSON.parse(json);
-
-console.log(obj, json, objFromJson);
-
-// OUTPUT:
-// {a: 2, b: 'crockford', c: undefined}
-// {"a":2, "b":"crockford"}
-// {a: 2, b: 'crockford'}
-Note that in this example, JSON cannot represent the JavaScript undefined object and so it gets dropped when converting from JavaScript to JSON.
-JSON RULES
-Data must be in key-value pair format. Each key-value pair should be separated by a comma (,).
-
-The key and value should be separated by a colon (:).
-
-All keys should be enclosed in double quotes (").
-
-Strings should be enclosed in double quotes ("). Single quotes (') are not allowed.
-
-Numbers can be integers or floats, and can be positive or negative.
-
-The value can be a string, number, boolean (true or false), null, array, or object. Objects and arrays can be nested.
-
-Nested objects and arrays should follow the same syntax rules as the top-level data.
-
-JSON data should be enclosed in curly braces ({}) if it represents an object, or in square brackets ([]) if it represents an array.
-### Regex
-You can create a regular expression using the class constructor or a regular expression literal.
-
-const objRegex = new RegExp('ab*', 'i');
-const literalRegex = /ab*/i;
-The string class has several functions that accept regular expressions. This includes match, replace, search, and split. For a quick test to see if there is a match you can use the regular expression object's test function.
-
-const petRegex = /(dog)|(cat)|(bird)/gim;
-const text = 'Both cats and dogs are pets, but not rocks.';
-
-text.match(petRegex);
-// RETURNS: ['cat', 'dog']
-
-text.replace(petRegex, 'animal');
-// RETURNS: Both animals and animals are pets, but not rocks.
-
-petRegex.test(text);
-// RETURNS: true
-### Rest and Spread
-Rest- prefix a parameter with ... This will make the parameter take the REST of all the parameters. so if I only have two parameters, the last being a rest parameter and I provide 7 arguments, the first will go to the first and the last 6 will all be put in the rest parameter as an array. Rest must be on the last paramter.
-Spread- the opposite of rest. you put the ... in the function call and it separates the array elements into parameters.
-### Destructuring
-const a = [1, 2, 4, 5];
-
-// destructure the first two items from a, into the new variables b and c
-const [b, c] = a;
-COMBINE REST SYNTAX
-const [b, c, ...others] = a;
-
-console.log(b, c, others);
-// OUTPUT: 1, 2, [4,5]
-When destructuring objects, you need to explicitly specify the properties that you want to pull from the source object.
-const o = { a: 1, b: 'animals', c: ['fish', 'cats'] };
-
-const { a, c } = o;
-
-console.log(a, c);
-// OUTPUT 1, ['fish', 'cats']
-You can also put the values into new variables
-const o = { a: 1, b: 'animals', c: ['fish', 'cats'] };
-
-const { a: count, b: type } = o;
-
-console.log(count, type);
-// OUTPUT 1, animals
-### Exceptions
-function connectDatabase() {
-  throw new Error('connection error');
-}
-
-try {
-  connectDatabase();
-  console.log('never executed');
-} catch (err) {
-  console.log(err);
-} finally {
-  console.log('always executed');
-}
-
-// OUTPUT: Error: connection error
-//         always executed
-the finally block just always runs after try even if there was no exception
-try {
-  // normal execution code
-} catch (err) {
-  // exception handling code
-} finally {
-  // always called code
-}
-#### Fallback
-This is when you put a different version of the code in the catch block if an exception is thrown so that you can hopefully still get something you can work with. Ex. using local storage instead of a database because the connection failed.
-### Scope
-Javascript has 4 scopes for variables
-Gobal - Visible to all code
-Module - Visible to all code running in a module
-Function - Visible within a function
-Block - Visible within a block of code delimited by curly braces
-The problem with var is that it ignores block scope
-### This
-- Global - When this is referenced outside a function or object it refers to the globalThis object. The globalThis object represents the context for runtime environment. For example, when running in a browser, globalThis refers to the browser's window object.
-- Function - When this is referenced in a function it refers to the object that owns the function. That is either an object you defined or globalThis if the function is defined outside of an object. Note that when running is JavaScript strict mode, a global function's this variable is undefined instead of globalThis.
-- Object - When this is referenced in a object it refers to the object.
-### Closure
-Functions have access to the variables of their immediate parent function.
-### Modules
-JavaScript modules allow for the partitioning and sharing of code. Initially JavaScript had no support for modules. Node.js, a server side JavaScript execution application, introduced the concept of modules in order to support the importing of packages of JavaScript from third party providers.
-
-JavaScript got full module support with ES6, and they have become the standard module representation as browser support for JavaScript modules is now almost universal.
-
-In order to differentiate between the two implementations, Node.js modules are called CommonJS modules, and JavaScript modules are called ES modules.
-
-Because modules create a file based scope for the code they represent, you must explicitly export the objects that you want to be visible outside the module. For example, here is a simple module that exports a function that displays an alert.
-
-alert.js
-
-export function alertDisplay(msg) {
-  alert(msg);
-}
-You can import the module's exported function into another module using the import keyword.
-
-main.js
-
-import { alertDisplay } from './alert.js';
-
-alertDisplay('called from main.js');
-When you use CommonJS modules the Node.js runtime treats all JavaScript as if it were modules and so it works seamlessly. When you use ES modules in the browser, via HTML script references, things get a little more complicated. The key thing to understand is that modules can only be called from other modules. You cannot import a module object into a globally scoped JavaScript file.
-
-From your HTML, you can differentiate that you are using a ES module by including the type of module in the script element. You can then import and use other modules and even make a module's object visible in the global scope. In the example below, we expose the alertDisplay imported function by attaching it to the global JavaScript window object so that it can then be called from the button onclick handler.
-
-index.html
-
-<html>
-  <body>
-    <script type="module">
-      import { alertDisplay } from './alert.js';
-      window.btnClick = alertDisplay;
-    </script>
-    <button onclick="btnClick('called from index.html')">Press me</button>
-  </body>
-</html>
-Fortunately, when you use a web framework bundler, discussed in later instruction, to generate your web application distribution code, you don't have to worry about differentiating between global Javascript files and JavaScript ES modules. The bundler will inject all the necessary syntax to connect your HTML to your modules. Historically, this was done by removing the modules and placing all of the JavaScript in a namespaced global partition. Now that ES Modules are supported on most browsers, the bundler will expose the ES module directly.
-### DOM
-You can provide a CSS selector to the querySelectorAll function in order to select elements from the document. The textContent property contains all of the element's text. You can even access a textual representation of an element's HTML content with the innerHTML property.
-#### Creating a new element in the DOM
-function insertChild(parentSelector, text) {
-  const newChild = document.createElement('div');
-  newChild.textContent = text;
-
-  const parentElement = document.querySelector(parentSelector);
-  parentElement.appendChild(newChild);
-}
-
-insertChild('#courses', 'new course');
-- to delete all elements call the removeChild function on the parent element.
-Injection
--stuff about it being dangerous with .innerHTML
-Event Listeners
-All DOM elements support these
-.addEventListener(stuff in here)
-Event Category	Description
-Clipboard	Cut, copied, pasted
-Focus	An element gets focus
-Keyboard	Keys are pressed
-Mouse	Click events
-Text selection	When text is selected
-- you can add event listeners in html too
-`<button onclick='alert("clicked")'>click me</button>`
-### Promises
-JavaScript executes as a single threaded application. That means there is only ever one piece of code executing at the same time. However, the fact that it does not execute concurrently does not mean that it does not execute in parallel. You can asynchronously execute code with the use of a JavaScript Promise. Because the execution is asynchronous the promise object can be in one of three states at any given point in time.
-
-pending - Currently running asynchronously
-fulfilled - Completed successfully
-rejected - Failed to complete
-You create a promise by calling the Promise object constructor and passing it an executor function that runs the asynchronous operation. Executing asynchronously means that promise constructor may return before the promise executor function runs.
-
-We can demonstrate asynchronous execution by using the standard JavaScript setTimeout function to create a delay in the execution of the code. The setTimeout function takes the number of milliseconds to wait and a function to call after that amount of time has expired. We call the delay function in a for loop in the promise executor and also a for loop outside the promise so that both code blocks are running in parallel.
-
-const delay = (msg, wait) => {
-  setTimeout(() => {
-    console.log(msg, wait);
-  }, 1000 * wait);
-};
-
-new Promise((resolve, reject) => {
-  // Code executing in the promise
-  for (let i = 0; i < 3; i++) {
-    delay('In promise', i);
-  }
-});
-
-// Code executing after the promise
-for (let i = 0; i < 3; i++) {
-  delay('After promise', i);
-}
-
-// OUTPUT:
-//   In promise 0
-//   After promise 0
-//   In promise 1
-//   After promise 1
-//   In promise 2
-//   After promise 2
-Resolving and rejecting
-Now that we know how to use a promise to execute asynchronously, we need to be able to set the state to fulfilled when things complete correctly, or to rejected when an error happens. The promise executor function takes two functions as parameters, resolve and reject. Calling resolve sets the promise to the fulfilled state, and calling reject sets the promise to the rejected state.
-
-Consider the following "coin toss" promise that waits ten seconds and then has a fifty percent chance of resolving or rejecting.
-
-const coinToss = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    if (Math.random() > 0.5) {
-      resolve('success');
-    } else {
-      reject('error');
-    }
-  }, 10000);
-});
-If you log the coinToss promise object to the console immediately after calling the constructor, it will display that it is in the pending state.
-
-console.log(coinToss);
-// OUTPUT: Promise {<pending>}
-If you then wait ten seconds and the log the coinToss promise object again, the state will either show as fulfilled or rejected depending upon the way the coin landed.
-
-console.log(coinToss);
-// OUTPUT: Promise {<fulfilled>}
-Then, catch, finally
-With the ability to asynchronously execute and set the resulting state, we now need a way to generically do something with the result of a promise after it resolves. This is done with functionality similar to exception handling. The promise object has three functions: then, catch, and finally. The then function is called if the promise is fulfilled, catch is called if the promise is rejected, and finally is always called after all the processing is completed.
-
-We can rework our coinToss example and make it so 10 percent of the time the coin falls off the table and resolves to the rejected state. Otherwise the promise resolves to fulfilled with a result of either heads or tails.
-
-const coinToss = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    if (Math.random() > 0.1) {
-      resolve(Math.random() > 0.5 ? 'heads' : 'tails');
-    } else {
-      reject('fell off table');
-    }
-  }, 10000);
-});
-We then chain the then, catch and finally functions to the coinToss object in order to handle each of the possible results.
-
-coinToss
-  .then((result) => console.log(`Coin toss result: ${result}`))
-  .catch((err) => console.log(`Error: ${err}`))
-  .finally(() => console.log('Toss completed'));
-
-// OUTPUT:
-//    Coin toss result: tails
-//    Toss completed
-The observer pattern
-Promises are the standard way to do asynchronous processing in JavaScript, but they are not the only way. The Observer pattern, popularized by web programming frameworks such as Angular, use a model called Observer. The major difference between Observers and Promises is that Promises immediately begin to execute when the Promise is created, but Observers form a pipeline that you then pass an execution object into. This allows Observers to be reused, and the result of executing an Observable to be saved as a history of a particular execution.
-### Async/Await
-JavaScript Promise objects are great for asynchronous execution, but as developers began build large systems with promises they started wanting a more concise representation. This was provided with the introduction of the async/await syntax. The await keyword wraps the execution of a promise and removed the need to chain functions. The await expression will block until the promise state moves to fulfilled, or throws an exception if the state moves to rejected. For example, if we have a function that returns a coin toss promise.
-
-const coinToss = () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (Math.random() > 0.1) {
-        resolve(Math.random() > 0.5 ? 'heads' : 'tails');
-      } else {
-        reject('fell off table');
-      }
-    }, 1000);
-  });
-};
-We can create equivalent executions with either a promise then/catch chain, or an await with a try/catch block.
-
-then/catch chain version
-
-coinToss()
-  .then((result) => console.log(`Toss result ${result}`))
-  .catch((err) => console.error(`Error: ${err}`))
-  .finally(() => console.log(`Toss completed`));
-async, try/catch version
-
-try {
-  const result = await coinToss();
-  console.log(`Toss result ${result}`);
-} catch (err) {
-  console.error(`Error: ${err}`);
-} finally {
-  console.log(`Toss completed`);
-}
-async
-One important restriction for working with await is that you cannot call await unless it is called at the top level of the JavaScript, or is in a function that is defined with the async keyword. Applying the async keyword transforms the function so that it returns a promise that will resolve to the value that was previously returned by the function. Basically this turns any function into an asynchronous function, so that it can in turn make asynchronous requests.
-
-This can be demonstrated with a function that makes animal noises. Notice that the return value is a simple string.
-
-function cow() {
-  return 'moo';
-}
-console.log(cow());
-// OUTPUT: moo
-If we designate the function to be asynchronous then the return value becomes a promise that is immediately resolved and has a value that is the return value of the function.
-
-async function cow() {
-  return 'moo';
-}
-console.log(cow());
-// OUTPUT: Promise {<fulfilled>: 'moo'}
-We then change the cow function to explicitly create a promise instead of the automatically generated promise that the await keyword generates.
-
-async function cow() {
-  return new Promise((resolve) => {
-    resolve('moo');
-  });
-}
-console.log(cow());
-// OUTPUT: Promise {<pending>}
-You can see that the promise is in the pending state because the promise's execution function has not yet resolved.
-
-await
-The async keyword declares that a function returns a promise. The await keyword wraps a call to the async function, blocks execution until the promise has resolved, and then returns the result of the promise.
-
-We can demonstrate await in action with the cow promise from above. If we log the output from invoking cow then we see that the return value is a promise. However, if we prefix the call to the function with the await keyword, execution will stop until the promise has resolved, at which point the result of the promise is returned instead of the actual promise object.
-
-console.log(cow());
-// OUTPUT: Promise {<pending>}
-
-console.log(await cow());
-// OUTPUT: moo
-By combining async, to define functions that return promises, with await, to wait on the promise, you can create code that is asynchronous, but still maintains the flow of the code without explicitly using callbacks.
-
-Putting it all together
-You can see the benefit for async/await clearly by considering a case where multiple promises are required. For example, when calling the fetch web API on an endpoint that returns JSON, you would need to resolve two promises. One for the network call, and one for converting the result to JSON. A promise implementation would look like the following.
-
-const httpPromise = fetch('https://simon.cs260.click/api/user/me');
-const jsonPromise = httpPromise.then((r) => r.json());
-jsonPromise.then((j) => console.log(j));
-console.log('done');
-
-// OUTPUT: done
-// OUTPUT: {email: 'bud@mail.com', authenticated: true}
-With async/await, you can clarify the code intent by hiding the promise syntax, and also make the execution block until the promise is resolved.
-
-const httpResponse = await fetch('https://simon.cs260.click/api/user/me');
-const jsonResponse = await httpResponse.json();
-console.log(jsonResponse));
-console.log('done');
-
-// OUTPUT: {email: 'bud@mail.com', authenticated: true}
-// OUTPUT: done
-### Debugging
-One of the simplest ways to debug your JavaScript code is to insert console.log functions that output the state of the code as it executes. For example, we can create a simple web application that has an HTML and JavaScript file that demonstrates the difference between let and var. By inserting console.log statements into the code, we can see what the value of each variable is as the code executes.
-
-index.html
-
-<body>
-  <h1>Debugging</h1>
-  <script src="index.js"></script>
-</body>
-index.js
-
-var varCount = 20;
-let letCount = 20;
-
-console.log('Initial - var: %d, let: %d', varCount, letCount);
-
-for (var varCount = 1; varCount < 2; varCount++) {
-  for (let letCount = 1; letCount < 2; letCount++) {
-    console.log('Loop - var: %d, let: %d', varCount, letCount);
-  }
-}
-
-const h1El = document.querySelector('h1');
-h1El.textContent = `Result - var:${varCount}, let:${letCount}`;
-console.log('Final - var: %d, let: %d', varCount, letCount);
-Take the following steps to see the result of console debugging.
-
-Create the above files in a test directory named testConsole
-Open the testConsole directory in VS Code
-Run index.html using the VS Code Live Server extension
-Open the Chrome browser debugger (press F12)
-Select the Console tab
-Refresh the browser
-You should see the following result.
-
-JavaScript console debugging
-
-You can use the debugger console window to inspect variables without using the console.log function from your code. For example, if you type varCount in the console window it will print out the current value of varCount. You can also execute JavaScript directly in the console window. For example, if you type varCount = 50 and press Enter it will change the current value of varCount.
-
-JavaScript console debugging variables
-
-Browser debugging
-Console.log debugging is great for times when you just need to quickly see what is going on in your code, but to really understand the code as it executes you want to use the full capabilities of the browser's debugger.
-
-Using the same setup we used for console.log debugging, open up Chrome's browser debugger, but this time select the source tab. This will display the source files that comprise the currently rendered content.
-
-JavaScript source debugging
-
-You can either select index.js from the source view on the left, or press CTRL-P (on Windows) or ⌘-P (on Mac) and then select index.js from the list that pops up. Then set a breakpoint on line 4 by clicking on the line number on the left of the displayed source code. This makes it so that the execution of code will pause whenever that line is executed. Refreshing the browser window will cause index.js to reload and pause on the breakpoint.
-
-JavaScript breakpoint
-
-With the browser paused in the debugger you can move your mouse cursor over a variable to see its value, see what variables are in scope, set watches on variables, or use the console to interact with the code.
-
-This gives you complete control to inspect what the JavaScript code is doing and experiment with possible alternative directions for the code. Take some time to poke around in the debugger. Learning how to exploit its functionality will make you a much better web developer.
-### NodeList/querySelectorAll
-When you use the querySelectorAll method, it returns a NodeList containing all the elements that match the specified selector. A NodeList is a collection of nodes (elements, text nodes, or other types of nodes) that can be accessed using array-like syntax, using an index to retrieve a specific element from the list.
-
-However, a NodeList is not exactly the same as an array. It does not have all the same methods as an array, such as map, reduce, or filter. It also does not have all the same properties, such as length. For example, if you try to access the length property of a NodeList, you will get a number, but it may not be the same as the actual number of elements in the list.
-
-That being said, many of the methods that work on arrays can also be used on NodeLists by converting them to arrays using the Array.from method or the spread operator (...). For example, you can convert a NodeList to an array like this:
-### Export data to URL from page
-    const currentPlant = plants[plantIndex];
-    const PlantString = JSON.stringify(currentPlant);
-    const encodedPlant = encodeURIComponent(PlantString);
-    window.location.href = 'garden.html?plant=${encodedPlant}';
-## Startup Queries
-- can I turn my addplant image into buttons so the mouse changes over them?
-- what is the importance of index.html?
-- how to center in the grid boxes?
-- add more plants to website.
 ## Test Review
-padding puts space around content of selected elements
-pals before marriage (padd, border, margin);
-CNAME points DNS to another DNS
-A points to IP address
-JSON must have "" around the key and value must never be undefined.
-a.filter() -
-The filter() function in JavaScript is used to create a new array with all elements that pass a certain test implemented by the provided callback function.
-
-The filter() method creates a new array by filtering out the elements that do not pass the specified condition(s). It takes a callback function as its argument, which is executed for each element of the array. The callback function takes three arguments:
-
-currentValue (required) - the value of the current element being processed
-index (optional) - the index of the current element being processed
-array (optional) - the array object that the filter() method was called upon
-The callback function should return a boolean value. If the function returns true, the current element will be added to the new array. If the function returns false, the current element will be skipped.
-
-v.match() - takes a regular expression and chooses values in the array that match
-The match() function in JavaScript is used to search for a specified pattern in a string and returns the matched string or an array of matched strings.
-
-The match() method takes one argument, which is the regular expression pattern to search for. The pattern can be a string or a regular expression object. The method returns an array containing the matched string or an empty array if no match is found.
-
-a.reduce() - takes an array and reduces it to one value
-The reduce() method takes two arguments: a callback function and an initial value for the accumulator. The callback function takes four arguments: the accumulator, the current element, the current index, and the array itself. The function returns the updated value of the accumulator after processing the current element.
-WHEN THE FUNCTION IS JUST TWO PARAMETERS IT IS THE ACCUMULATOR AND THE CURRENT ELEMENT;
-
-/A|f/i A or f case insensitive
-
-CSS font loading from google @import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@700&display=swap');
-.map() - takes array and makes it an array of stuff with different values;
-when javascript console.logs an array, it puts '' around strings.
-subdomain is the whole thing cs260.cs.byu.edu
-for arrow functions {++y} is undefined but ++y returns an incremented y value. If it's one line you do not need a return value.
-Javascript objects do not need quotes around the strings in the keys.
 chmod +x deploy.sh - 
 chmod takes options and a mode modifier and then a file to be granted access
 chmod [options] mode filename;
@@ -1432,10 +1160,6 @@ r: Gives read permission.
 w: Gives write permission.  
 x: Gives execute permission.  
 
-
-sudo deploy.sh //doesn't make any sense
-ls -la deploy.sh
-ssh deploy.sh //doesn't make any sense
 
 
 
