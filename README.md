@@ -1,18 +1,20 @@
 # NOTES
 
 ## Research further: 
-- [ ] console commands
+- [ ] console commands in depth
 - [ ] git ignore files
 - [ ] what chmod stands for
+- [ ] common html attributes
+- [ ] clean up/summarize copied things
 
 
 ## Random things: 
 
 ### SSH into your server
-`➜  ssh -i [key pair file] ubuntu@[ip address or your domain name]`
+`➜  ssh -i [key pair file] ubuntu@[ip address or your domain name]`  
 `exit` to exit the shell
 
-### chmod commands
+### Chmod commands
 Order: User, Group, Everyone  
 
 | Numbers |  Notation |  Permissions  | 
@@ -408,23 +410,6 @@ Replace `:80` with your domain name (making sure to remove the colon).
 6. Restart Caddy so that your changes take effect. 
 `sudo service caddy restart` 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Hypertext Markup Language
 
 - [MDN HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
@@ -432,7 +417,10 @@ Replace `:80` with your domain name (making sure to remove the colon).
 
 ## Elements and tags
 
-Each of these elements may contain other elements that provide the structure of our web page. The `html` element represents the top level page structure. The `head` element contains metadata about the page and the page title. The `body` element represents the content structure. The `main` element represents the main content structure, as opposed to things like headers, footers, asides, and navigation content. These additional elements result in the following HTML page.
+`html` represents the top level page structure  
+`head` contains metadata about the page and the page title  
+`body` represents the content structure  
+`main` element represents the main content structure, as opposed to things like headers, footers, asides, and navigation content.   
 
 ```html
 <html>
@@ -448,15 +436,13 @@ Each of these elements may contain other elements that provide the structure of 
 ```
 ## Attributes
 
-Every HTML element may have attributes. Attributes describe the specific details of the element. For example, the `id` attribute gives a unique ID to the element so that you can distinguish it from other elements. The `class` attribute is another common element attribute that designates the element as being classified into a named group of elements. Attributes are written inside the element tag with a name followed by an optional value. You can use either single quotes (`'`) or double quotes (`"`) to delimit attribute values.
+Every HTML element may have attributes. Attributes describe the specific details of the element. For example, the `id` attribute gives a unique ID to the element so that you can distinguish it from other elements. The `class` attribute is another common element attribute that designates the element as being classified into a named group of elements. Attributes are written inside the element tag with a name followed by an optional value. You can use single quotes or double quotes to delimit attribute values.
 
 ```html
 <p id="hello" class="greeting">Hello world</p>
 ```
 
 ## Hyperlinks
-
-One of the core features that made the web so successful was the ability to create hyperlinks that take you from one page to another another with a simple click. A hyperlink in HTML is represented with an anchor (`a`) element that has an attribute containing the address of the hyperlink reference (`href`). A hyperlink to BYU's home page looks like this:
 
 ```html
 <a href="https://byu.edu">Go to the Y</a>
@@ -504,15 +490,13 @@ Modern HTML contains over 100 different elements. Here is a short list of HTML e
 
 ## Comments
 
-You can include comments in your HTML files by starting the comment with `<!--` and ending it with `-->`. Any text withing a comment block will be completely ignored when the browser renders it.
-
 ```html
 <!-- commented text -->
 ```
 
 ## Special characters
 
-HTML uses several reserved characters for defining its file format. If you want to use those characters in your content then you need to escape them using the `entity` syntax. For example, to display a less than symbol (`<`) you would instead use the less than entity (`&lt;`). You can also use the entity syntax to represent any unicode character.
+To use certain characters in your content, you need to escape them using the `entity` syntax.
 
 | Character | Entity      |
 | --------- | ----------- |
@@ -523,9 +507,312 @@ HTML uses several reserved characters for defining its file format. If you want 
 | '         | `&apos;`    |
 | &#128512; | `&#128512;` |
 
+# HTML structure elements
+
+Common HTML structural elements include  
+`body`  
+`header` 
+`footer`  
+`main`  
+`section`  
+`aside`  
+`p`  
+`table`  
+`ol/ul`  
+`div`  
+`span`  
+
+We demonstrate the use of each element with the following HTML document. It starts with the top level content `body`. The body has three children, a `header`, `main`, and `footer`.  
+Each of the body children then contains other structural content.  
+
+The `header` contains a `p`aragraph with a `span`, and a `nav`igation containing multiple `div`isions of sub-content.  
+
+The `main` contains multiple `section`s that contain either an unordered list (`ul`) or a `table`. Main also contains an `aside` for content that does not fit the content flow of the sections.
+
+The `footer` has a content division with a single span.
+
+```html
+<body>
+  <p>Body</p>
+  <header>
+    <p>Header - <span>Span</span></p>
+    <nav>
+      Navigation
+      <div>Div</div>
+      <div>Div</div>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <p>Section</p>
+      <ul>
+        <li>List</li>
+        <li>List</li>
+        <li>List</li>
+      </ul>
+    </section>
+    <section>
+      <p>Section</p>
+      <table>
+        <tr>
+          <th>Table</th>
+          <th>Table</th>
+          <th>Table</th>
+        </tr>
+        <tr>
+          <td>table</td>
+          <td>table</td>
+          <td>table</td>
+        </tr>
+      </table>
+    </section>
+    <aside>
+      <p>Aside</p>
+    </aside>
+  </main>
+
+  <footer>
+    <div>Footer - <span>Span</span></div>
+  </footer>
+</body>
+```
+With some styling:
+![HTML structure](htmlStructure.jpg)
+
+Properly representing the page structure = important for automated tools like search indexing crawlers and accessibility screen readers to correctly interpret the document
+
+## Block and inline
+
+A block element is meant to be a distinct block in the flow of the content structure.   
+An inline element is meant to be inline with the content flow of a block element.   
+
+In other words, inline elements do not disrupt the flow of a block element's content. For example, the block element `div` (division) could have an inline element `b` in order to bring attention to a portion of its sub-text. Likewise a `p` (paragraph) element could have a `span` to mark the paragraph's sub-text as a person's name.
+
+```html
+<div>He said <b>don't</b> cross the beams.</div>
+
+<p>
+  Authors such as <span>ee cummings</span> often used unconventional structure.
+</p>
+```
+
+# HTML input elements
+
+📖 **Deeper dive reading**: [MDN Input element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input)
+
+Input elements:  
+
+| Element    | Meaning                          | Example                                        |
+| ---------- | -------------------------------- | ---------------------------------------------- |
+| `form`     | Input container and submission   | `<form action="form.html" method="post">`      |
+| `fieldset` | Labeled input grouping           | `<fieldset> ... </fieldset>`                   |
+| `input`    | Multiple types of user input     | `<input type="" />`                            |
+| `select`   | Selection dropdown               | `<select><option>1</option></select>`          |
+| `optgroup` | Grouped selection dropdown       | `<optgroup><option>1</option></optgroup>`      |
+| `option`   | Selection option                 | `<option selected>option2</option>`            |
+| `textarea` | Multiline text input             | `<textarea></textarea>`                        |
+| `label`    | Individual input label           | `<label for="range">Range: </label>`           |
+| `output`   | Output of input                  | `<output for="range">0</output>`               |
+| `meter`    | Display value with a known range | `<meter min="0" max="100" value="50"></meter>` |
+
+## Form element
+Main purpose is to submit the values of the inputs it contains. JavaScript made this kind of obsolete but it is still used as a container.
+
+Here is an example of a simple form that submits the value of a `textarea` element.
+
+```html
+<form action="submission.html" method="post">
+  <label for="ta">TextArea: </label>
+  <textarea id="ta" name="ta-id">
+Some text
+  </textarea>
+  <button type="submit">Submit</button>
+</form>
+```
+
+Pressing the submit button sends the following data to the web server. The browser generates the data by combining the textarea's `name` attribute with the current value of the textarea.
+
+```
+ta-id=Some+text
+```
+
+## Input element
+
+| Type           | Meaning                           |
+| -------------- | --------------------------------- |
+| text           | Single line textual value         |
+| password       | Obscured password                 |
+| email          | Email address                     |
+| tel            | Telephone number                  |
+| url            | URL address                       |
+| number         | Numerical value                   |
+| checkbox       | Inclusive selection               |
+| radio          | Exclusive selection               |
+| range          | Range limited number              |
+| date           | Year, month, day                  |
+| datetime-local | Date and time                     |
+| month          | Year, month                       |
+| week           | Week of year                      |
+| color          | Color                             |
+| file           | Local file                        |
+| submit         | button to trigger form submission |
+
+In order to create an input you specify the desired `type` attribute along with any other attribute associated with that specific input. Here is an example of a checked radio button and its associated label.
+
+```html
+<label for="checkbox1">Check me</label> <input type="checkbox" name="varCheckbox" value="checkbox1" checked />
+```
+
+## Common Input Element Attributes  
+
+| Attribute | Meaning                                                                             |
+| --------- | ----------------------------------------------------------------------------------- |
+| name      | The name of the input. This is submitted as the name of the input if used in a form |
+| disabled  | Disables the ability for the user to interact with the input                        |
+| value     | The initial value of the input                                                      |
+| required  | Signifies that a value is required in order to be valid                             |
+| pattern   | Provides regex to match to be valid (only text, search, url, tel, email, password   |
+| for       | Associates label with a control element                                             |
+|placeholder| Placeholder value in input boxes
+
+![HTML Input](htmlInput.jpg)
+
+## Validating input
+
+Several of the input elements have validation built into them. This means that they will not accept a value that is not for example, a number, a URL, outside of a range, or an email address. You can also specify the `required` attribute on an input element to mark it as requiring a value before it can be submitted. The `pattern` attribute exists on `text`, `search`, `url`, `tel`, `email`, and `password` inputs. When present, the pattern attribute provides a regular expression that must match for the input to be considered as valid.
+
+You should also have validation built into your JavaScript that checks input data to ensures everything is valid before it is submitted. All of the input elements support functions for determining their validation state. Additionally, there are CSS style selectors for visualizing the validity of the input. In order to have a good user experience, it is critical that you provide sufficient user feedback early in the input process. A good design will give feedback as, or before, the user begins to input. A poor design will keep the user guessing as to why the data is not being accepted, or even if it was accepted.
 
 
+# HTML media elements
 
+`img`, `audio`, `video`, `svg`, and `canvas`
+
+## External media
+
+The media tags that reference external media all take a URL as an attribute. The path represented by the URL can either be a relative path or full path. A full path includes the protocol, domain name, and path to the file.
+
+```html
+https://images.pexels.com/photos/164170/pexels-photo-164170.jpeg
+```
+
+A relative path references a file that is served from the same location as the HTML page rendering the element. You want to make the path is as relative as possible so that you can move your code around without having to actually adjust all of the external page references. For example, if your HTML page is located in a directory with a subdirectory named `images` that contains a file named `photo.jpg` you would use a relative path as follows.
+
+```html
+images/photo.jpg
+```
+
+### Image
+You can add `width` or `height` attributes to change the aspect ratio or size (specify only one to keep the same aspect ratio)
+```html
+<img
+  alt="mountain landscape"
+  src="https://images.pexels.com/photos/164170/pexels-photo-164170.jpeg"
+/>
+```
+
+![mountain landscape](htmlImage.jpg)
+
+### Audio
+
+To include an audio file in your content you use the `audio` element and specify the `src` attribute with the URL to the source image. You can include the `controls` attribute if you want the user to be able to control the audio playback. If you do not display the controls then there is no visual representation of the audio in the rendered page. The `autoplay` attribute starts the audio playing as soon as the audio file is loaded, and the `loop` attribute keeps it playing over and over.
+
+⚠ Note that automatically playing audio is strongly discouraged unless you provide a way for the user to opt-in to that behavior.
+
+```html
+<audio controls src="testAudio.mp3"></audio>
+```
+
+![Html Audio](htmlAudioImg.jpg)
+
+### Video
+
+To include a video in your content you use the `video` element and specify the `src` attribute with the URL to the source video. Like the audio element you can include the `controls` or `autoplay` attributes
+
+⚠ Note that you may need to include the `crossorigin="anonymous"` attribute if you are requesting files from a different domain than the one serving your content.
+
+```html
+<video controls width="300" crossorigin="anonymous">
+  <source
+    src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+  />
+</video>
+```
+
+![HTML video](htmlVideoImg.jpg)
+
+## Internal media
+
+The internal media elements `svg` and `canvas` allow you to actually create images directly within your HTML.
+
+### Scalable Vector Graphics (SVG)
+
+An example SVG graphic that draws a christmas ornamant:
+
+```html
+<svg width="200" height="200" viewBox="-100 -100 200 200”>
+  <circle cx="0" cy="20" r="70" fill="#D1495B" />
+
+  <circle
+    cx="0"
+    cy="-75"
+    r="12"
+    fill="none"
+    stroke="#F79257"
+    stroke-width="2"
+  />
+
+  <rect x="-17.5" y="-65" width="35" height="20" fill="#F79257" />
+</svg>
+```
+
+##### SVG Path Code
+
+`M` move to - specifies connecting points until you have a fillable shape  
+`L` line to - actually draws lines  
+`H` horizontal line to - draws horizontal lines  
+`V` vertical line to - draws vertical lines  
+`C` curveto - 
+`S` smooth curveto
+`Q` quadratic Bézier curve - first Q input is the focal point
+`T` smooth quadratic Bézier curveto
+`A` elliptical Arc
+`Z` closepath
+
+![SVG demo](Media/htmlSvg.png)
+
+When combined with JavaScript and CSS you can produce some amazing visualizations. Checkout this [CodePen](https://codepen.io/leesjensen/pen/mdKjMLY) for an example.
+
+Consult the [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/SVG) if you are interested in learning more about SVG.
+
+### Canvas
+
+The `canvas` element was introduced to HTML in order to facilitate 2D drawing and animation. The HTML for the canvas element is fairly simple, but actually drawing on the canvas requires JavaScript support. Here is a simple red dot example.
+
+```html
+<canvas
+  id="canvasDemo"
+  width="300"
+  height="200"
+  style="border: 1px solid #000000"
+></canvas>
+<script>
+  const ctx = document.getElementById('canvasDemo').getContext('2d');
+  ctx.beginPath();
+  ctx.arc(150, 100, 50, 0, 2 * Math.PI);
+  ctx.fillStyle = 'red';
+  ctx.strokeStyle = 'red';
+  ctx.fill();
+  ctx.stroke();
+</script>
+```
+
+If you would like to see some examples of complex canvas renderings check out these examples on CodePen.
+
+- [Neon Hexagon](https://codepen.io/leesjensen/pen/QWxBMrE)
+- [Particles](https://codepen.io/leesjensen/pen/vYraJRP)
+- [Ribbons 2](https://codepen.io/leesjensen/pen/wvXxqja)
 
 
 
@@ -762,10 +1049,7 @@ ssh (secure shell) provides a secure encrypted connection between two hosts over
 
 
 ## Memory of Light's notes
-## SIMON Feb 4 What I learned
-./deployFiles.sh -k ~/keys/production.pem -h yourdomain.click -s simon
-This deletes previous deployment of simon, copies all of the files in the directory, and tells caddy to host the files under the simon subdomain.
-I learned a ton about the different html elements and their attributes and what they actually do. For example, the for attribute associates with an id and links the label to the input box so that when you click the name you are directed to the input. In addition I took it upon myself to study the paths and how that works. I learned that M is moveto and basically just specifies a point and another and another until you have a shape that can be filled. Unlike M, L actually draws lines as it moves. Q makes a quadratic curve starting that the last point previous to Q and going to the second input of Q. The first Q input is the focal point. I also learned how coordinates are counted in the viewBox. They start at the top left which is 0,0. Down is positive y, right is positive x. I was also able to just really get in my head how certain elements can be used and the organization of a page is displayed. It was confusing for a while because it seemed like many elements didn't produce noticeable effects, but now I'm seeing the potential for a lot of these division to be used for styling and interactivity purposes which really cleared a lot of confusion. I also learned that readonly is applied to input when you want it to just be display and not have the user input anything. Overall it was mostly learning about individual attributes and elements of which I made note of in repsective sections of this document. 
+
 ## Simon Feb 14 CSS What I learned
 
 Positioning Functions
@@ -798,139 +1082,6 @@ padding - the next out, clears an area around the content. The padding is transp
 border- the edge; default 0  
 margin- empty space between elements if you add it; default 0  
 fr - only availabe in display: grid; means fraction of available space. 1fr means all of the available space. You can also combine them in rations so 1fr and 2fr would split the space into three parts and give 1 part to an element and 2 parts to another
-
-
-#### Attributes
-attributes describe specific details of the element. ex. the `id` attribute gives a unique ID to the element so you can distinguish it from other elements.  
-- `class` attribute- designates element as beeing classified into a named group of elements.   
--written in the element tag with aname followed by an optional value.   
-`<p id="hello" class="greeting">Hello world</p>`  
-##### Common Input attributes
-`name` name of imput. submitted as the name of the input if used in a form, can be used to reference the element in javascript  
-`disabled` disables the ability for the user to interact with the input  
-`value` the initial value of the input  
-`required` signifies that a value is required in order to be valid  
-`for` associates label with a control element  
-`placeholder` - used to make a phantom value in an input box  
-
-
-#### Common elements
-`html` page container  
-`head` header information  
-`title` title of page  
-`meta` metadata for the page such as character set or viewport settings  
-`script` JavaScript reference.   
-`include` external content reference  
-`body` entire content body of page  
-`header` header of main content  
-`footer` footer of main content  
-`nav` navigational inputs  
-`main` main content of page  
-`section` a section of the main content  
-`aside` aside content from the main content  
-`div` a block division of content  
-`span` an inline span of content  
-`h<1-9>` text heading. From h1, the highest level, down to h9, the lowest level  
-`p` a paragraph of text  
-`b` bring attention  
-`table` table  
-`tr` table row  
-`th` table header  
-`td` table data  
-`ol, ul` ordered or unordered list  
-`li` list item  
-`a` anchor the text to a hyperlink  
-`img` graphical image reference  
-`dialog` interactive componenet such as a confirmation  
-`form` a collection of user input  
-`input` user input field  
-`audio` audio content  
-`video` video content  
-`svg` scalable vector graphic content  
-`iframe` inline fram of another HTML page  
-#### Comments  
-`<!-- commented text -->` this will be ignored when the browser renders the doc
-#### Special Characters
-- if you want to use special characters you need to escape them using entity syntax.
-& - `&amp;`
-< - `&lt;`
-> - `&gt;`
-" - "
-' - '
-😀 - `&#128512;`
-etc.
-#### HTML Versions
-Year	Version	Features  
-1990	HTML1	format tags  
-1995	HTML2	tables, internationalization  
-1997	HTML3	MathML, CSS, frame tags  
-1999	HTML4	external CSS  
-2014	HTML5	email, password, media, and semantic tags  
-
-#### Rendering HTML
-- You can save any HTML file to your disk and then open the file in your browser or you can open it in VScode and use the Live Server extension to display html. 
-#### HTML Structure
-#### HTML Input Elements
-`form` input container and submission  
-`fieldset` labeled input grouping  
-`input` multiple types of user input  
-`select` selection dropdown  
-ex.
-```
-  <select id="select" name="varSelect">
-    <option selected>option1</option>
-    <option>option2</option>
-    <option>option3</option>
-```
-`optgroup` grouped selection dropdown  
-`option` selection option  
-`textarea` multiline text input  
-`label` individual input label  
-`output` output of input  
-`meter` display value with a known range  
-* form used to be necessary but since Javascript, it has lost much of its usefulness.
-##### To set the type of Input:
-- use the type attribute  
-text - single line textual value  
-password - obscured password  
-email - email address  
-tel - telephone number  
-url - url address  
-number - numerical value  
-checkbox - inclusive selection  
-radio - exclusive selection  
-range - range limited number  
-date - year, month, day  
-datetime-local - date and time  
-month - year, month  
-week - week of year  
-color - color  
-file - local file  
-submit - button to trigger form submission  
-#### HTML Media elements
-`img, audio, and video` are just references to external files.
-`svg and canvas` internal media elements that contain code for rendering a visual image that can even be animated
-* media tags that reference external media all take URL as an attribute. you can put the url as a relative path or a full path. Make the path as relative as possible so that if you change your code it doesn't affect the url.
-`img` - specify the `src` attribute with the url to the source image. specify an `alt` attribite to describe the image for accessibility.  
-`audio` - uses src, include `controls` if you want the user to be able to control the audio playback (it makes a visual representation of the audio) `autoplay` starts the audio as soon as the audio file is loaded `loop` keeps playing it over and over  
-`video` - uses src, controls, and autoplay, you may need to include `crossorigin="anonymous"` if you are requesting files from a different domain than the one serving your content  
-`svg` - scalable vector graphics, allows you to render graphics inline in your HTML. Lots of attributes yeah  
-`canvas` - facilitates 2D drawing and animation, requires javascript to work  
-#### SVG Path Code
-M = moveto  
-L = lineto  
-H = horizontal lineto  
-V = vertical lineto  
-C = curveto  
-S = smooth curveto  
-Q = quadratic Bézier curve  
-T = smooth quadratic Bézier curveto  
-A = elliptical Arc  
-Z = closepath  
-
-### Command for running simon
-./deployFiles.sh -k ~/keys/production.pem -h yourdomain.click -s simon
-This deletes previous deployment of simon, copies all of the files in the directory, and tells caddy to host the files under the simon subdomain.
 
 ## CSS (Cascading Style Sheets)
 animate, display custom fonts, respond to user actions, alter layout of page dynamically based off of device being used
@@ -1086,12 +1237,7 @@ figure out the other ig.
 `line-height: (insert 1/2height of element)` will center the text vertically  
 `align-items: center` aligns items along the cross axis of the flex container; centers them  
 `justify-content: center` aligns items along the main axis of the flex container; centers them.  
-### Debugging CSS
-use browser developer tools.
-### CSS Frameworks
-lots of code for repeatable layouts
-- Tailwind
-- Bootstrap - the most popular and successful and has come to define what the layout of a webpage should be. Integrate by referencing the CSS files from their content delivery network (CDN) 
+
 ### CSS Position
 using position: value;
 "static": This is the default value, and it means that the element is positioned according to the normal flow of the page.
@@ -1163,16 +1309,16 @@ x: Gives execute permission.
 
 
 
-#### startup
+# startup
 startup assignment cs260 W23
  
 Pitch: 
-You've seen people with unconventional pets on TV. Some have monkeys, others lions and tigers. Now, it's your turn! Through this application, you can adopt your own virtual pets and watch them interact with your friends' pets too! You will be able to choose the species of your new pet, name them, and even accessorize them. All pets that you create will be saved under your account so you can keep track of your adorable critters. 
+Learn about animals and adopt your own virtually. Through this application, you can adopt your own virtual pets and learn their conservation status and cool facts about them! You will be able to choose the species of your new pet, name them, and even accessorize them. All pets that you create will be saved under your account so you can keep track of your adorable critters. 
 
-[MODEL](https://github.com/hajjiinnn/startup/blob/main/Untitled_Artwork.pdf)
+[MODEL](https://github.com/hajjiinnn/startup//READMEMedia/blob/main/Untitled_Artwork.pdf)
 
-Key features include:
--secure login via HTTPS
--ability to choose, name, and accessorize pet
--ability to see pets in their habitat
--ability to edit pets in your account
+Key features include:  
+-secure login via HTTPS  
+-ability to choose, name, and accessorize pet  
+-ability to see pets in their habitat  
+-ability to edit pets in your account  
