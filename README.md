@@ -287,7 +287,7 @@ CONFLICT (content): Merge conflict in README.md
 Automatic merge failed; fix conflicts and then commit the result.
 ```
 
-We now need to resolve the merge conflict that it says has happened with our `README.md` file. If you are using VS Code with the GitLens extension installed it will visually walk you through this process. However, so you can understand what is going on, we will do this using the console. The first step is to open up `README.md` in an editor. You will see that git has injected lines that highlight where the conflict is. Both your local change and the change made on GitHub are included.
+We now need to resolve the merge conflict that it says has happened with our `README.md` file. The first step is to open up `README.md` in an editor. You will see that git has injected lines that highlight where the conflict is. Both your local change and the change made on GitHub are included.
 
 ```diff
 An example start up application
