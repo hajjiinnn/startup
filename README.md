@@ -29,7 +29,7 @@ Order: User, Group, Everyone
 |    7    |    rwx    |Read/Write/Exec| 
 
 ### Keyboard shortcut to select multiple lines to edit in VS Code
-`alt` and select
+`alt` and select    
 
 # The Console
 
@@ -82,6 +82,15 @@ There are also keystrokes that have special meaning in the console.
 
 - `CTRL-R` - Use type ahead to find previous commands
 - `CTRL-C` - Kill the currently running command
+
+## How to edit a file from the command line
+1. Open the file using the vi or vim command:  
+`vi example_file`
+2. Press the `i` key to enter insert mode.  
+3. Make your desired changes. Note that you can use the arrow keys to move around in the file.  
+4. Press the escape `ESC` key to exit insert mode.   
+5. Type `:w` and press the enter key to save your changes.  
+6. Type `:q` and press the enter key to close the file. (Optionally, type `:wq` to save and close the file, or `:q!` to close without saving)
 
 # Git
 
@@ -265,6 +274,14 @@ Fast-forward
 
 After running the pull command, your development clone and the GitHub clone are now the same.
 
+## Reverting Bad Changes
+
+1. use `git log` to find the hashcode for the commit you want to reset or keep  
+2. hard reset your repo using one of the following commands:  
+`git reset --hard <hashcode>` will delete all file changes/commits after the chosen commit  
+`git reset --soft <hashcode>` will delete all commits after this point, but keep all file changes after the chosen commit  
+`git revert <hashcode>` will delete a chosen commit and its file changes, but will keep the commits before and after the deleted commit  
+
 ## Handling merge conflicts
 
 By pushing and pulling often, everyone keeps an up to date copy of the repository. This is important so that you don't run into merging problems caused by two peers modifying the exact same code. Merging only becomes something you have to deal with when two people modify the exact same line of code. However, when you have two peers working together you are always going to have a merge conflict at some point in time and so let's discuss how to handle this.
@@ -441,6 +458,51 @@ Every HTML element may have attributes. Attributes describe the specific details
 ```html
 <p id="hello" class="greeting">Hello world</p>
 ```
+
+### List of Attributes/Tag Combos
+
+Body  
+`<body bgcolor="color">` bgcolor attribute specifies the background color of the body of a webpage. You can specify the color in the form of the name of the color or in a Hex number.  
+`<body background="img.png">` This tag can set an image as the background of the document.  
+`<body text="color">` It sets the color of the text that the body tag contains.  
+`<body link="color">` This tag sets the default color of the links that the user hasn't visited yet.  
+
+Image  
+`<img src="url" alt="text">` Embeds an image with an alternate text.  
+`<img src="url" alt="text" align="direction">` Align an image on the web page. You can set the values such as left, right, top, and bottom.  
+`<img src="url" alt="text" border="number">` border attribute sets the size of the border around the image.  
+`<img src="url" alt="text" height="pixels">` Specifies the height of the image.  
+`<img src="url" alt="text" width="pixels">` Specifies the width of the image.  
+`<img src="url" alt="text" usemap="map-name">` Specifies an image as a client-side image map. 
+
+Anchor  
+`<a href="url">...</A>` Sets the URL of the Hyperlink.  
+`<a href="url" download>` Specifies that the target file specified in the herf attribute will be downloaded when the user clicks on the link.  
+`<a href="url" target="_blank">` Specifies where to open the linked document.  
+`<a href="url" type="text/html">` Specifies the type of the linked document.  
+
+Table  
+`<table border="pixels">` Sets the size of the cell borders.  
+`<table cellspacing="pixels">` Specifies the amount of space between cells.  
+`<table bgcolor="value">` Sets the background color of the table.  
+`<table height="pixels">` Specifies the height of the table.  
+`<table width="pixels">` Specifies the width of the table.  
+`<td colspan="columns">` Sets a cell to span columns.  
+`<td rowspan="rows">` Sets the cell to span rows.  
+
+Frame  
+`<frame src = "URL" frameborder="value">` Specifies whether to display a border around the frame or not.  
+`<frame src = "URL" marginheight="value">` Sets the top and bottom margins of the frame.  
+`<frame src = "URL" marginwidth="value">` Sets the margin between frames.  
+`<frame src = "URL" name="value">` Specifies the name of the Frame.  
+
+Form  
+`<form action="URL">` It specifies where to send the data when the form is submitted.  
+`<form method="get|post">` Specifies the HTTP method to use when the form is submitted. You can use the get or post method.  
+`<form name="myForm">` Specifies the name of the form.  
+`<form autocomplete="on">` It sets the autocomplete on or off.  
+`<form accept-charset="utf-8">` Sets the character encoding that is going to be used.  
+
 
 ## Hyperlinks
 
@@ -712,7 +774,7 @@ You can add `width` or `height` attributes to change the aspect ratio or size (s
 />
 ```
 
-![mountain landscape](htmlImage.jpg)
+`![mountain landscape](htmlImage.jpg)`
 
 ### Audio
 
@@ -724,7 +786,7 @@ To include an audio file in your content you use the `audio` element and specify
 <audio controls src="testAudio.mp3"></audio>
 ```
 
-![Html Audio](htmlAudioImg.jpg)
+`![Html Audio](htmlAudioImg.jpg)`
 
 ### Video
 
@@ -740,7 +802,7 @@ To include a video in your content you use the `video` element and specify the `
 </video>
 ```
 
-![HTML video](htmlVideoImg.jpg)
+`![HTML video](htmlVideoImg.jpg)`
 
 ## Internal media
 
@@ -766,21 +828,20 @@ An example SVG graphic that draws a christmas ornamant:
   <rect x="-17.5" y="-65" width="35" height="20" fill="#F79257" />
 </svg>
 ```
+![SVG demo](Media/htmlSvg.png)
 
-##### SVG Path Code
+<!-- ##### SVG Path Code
 
 `M` move to - specifies connecting points until you have a fillable shape  
 `L` line to - actually draws lines  
 `H` horizontal line to - draws horizontal lines  
 `V` vertical line to - draws vertical lines  
 `C` curveto - 
-`S` smooth curveto
-`Q` quadratic Bézier curve - first Q input is the focal point
-`T` smooth quadratic Bézier curveto
-`A` elliptical Arc
-`Z` closepath
-
-![SVG demo](Media/htmlSvg.png)
+`S` smooth curveto  
+`Q` quadratic Bézier curve - first Q input is the focal point  
+`T` smooth quadratic Bézier curveto  
+`A` elliptical Arc  
+`Z` closepath   -->
 
 When combined with JavaScript and CSS you can produce some amazing visualizations. Checkout this [CodePen](https://codepen.io/leesjensen/pen/mdKjMLY) for an example.
 
