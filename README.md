@@ -459,7 +459,7 @@ Every HTML element may have attributes. Attributes describe the specific details
 <p id="hello" class="greeting">Hello world</p>
 ```
 
-### List of Attributes/Tag Combos
+### List of Common Attributes/Tag Combos
 
 Body  
 `<body bgcolor="color">` bgcolor attribute specifies the background color of the body of a webpage. You can specify the color in the form of the name of the color or in a Hex number.  
