@@ -28,8 +28,9 @@ Order: User, Group, Everyone
 |    6    |    rw-    |   Read/Write  |  
 |    7    |    rwx    |Read/Write/Exec| 
 
-### Keyboard shortcut to select multiple lines to edit in VS Code
-`alt` and select    
+### Keyboard shortcuts for VS Code
+`alt` and select to select multiple things to edit at once  
+`ctrl` + `shift` + `L` to select all highlighted instances and edit    
 
 # The Console
 
@@ -640,7 +641,7 @@ The `footer` has a content division with a single span.
 </body>
 ```
 With some styling:
-![HTML structure](htmlStructure.jpg)
+![HTML structure](/Startup/startup/readme-media/htmlStructure.jpg)
 
 Properly representing the page structure = important for automated tools like search indexing crawlers and accessibility screen readers to correctly interpret the document
 
@@ -738,7 +739,7 @@ In order to create an input you specify the desired `type` attribute along with 
 | for       | Associates label with a control element                                             |
 |placeholder| Placeholder value in input boxes
 
-![HTML Input](htmlInput.jpg)
+![HTML Input](/Startup/startup/startup-media/htmlInput.jpg)
 
 ## Validating input
 
@@ -828,7 +829,7 @@ An example SVG graphic that draws a christmas ornamant:
   <rect x="-17.5" y="-65" width="35" height="20" fill="#F79257" />
 </svg>
 ```
-![SVG demo](Media/htmlSvg.png)
+![SVG demo](/Startup/startup/startup-media/htmlSvg.png)
 
 <!-- ##### SVG Path Code
 
@@ -869,32 +870,564 @@ The `canvas` element was introduced to HTML in order to facilitate 2D drawing an
 </script>
 ```
 
-If you would like to see some examples of complex canvas renderings check out these examples on CodePen.
+# Cascading Style Sheets
 
-- [Neon Hexagon](https://codepen.io/leesjensen/pen/QWxBMrE)
-- [Particles](https://codepen.io/leesjensen/pen/vYraJRP)
-- [Ribbons 2](https://codepen.io/leesjensen/pen/wvXxqja)
+Functionally, CSS is primarily concerned with defining `rulesets`, or simply a `rules`. A rule is comprised of a `selector` that selects the elements to apply the rule to, and one or more `declarations` that represent the `property` to style with the given `property value`.
+
+![CSS definitions](/Startup/startup/readme-media/cssDefinitions.jpg)
+
+For example, consider the following rule.
+
+```css
+p {
+  font-family: sans-serif;
+  font-size: 2em;
+  color: navy;
+  text-shadow: 3px 3px 1px #cccccc;
+}
+```
+
+The selector `p` selects all paragraph elements in the HTML document. The four specified declarations then: 1) change the font to use a san-serif font, 2) increase the font size to be twice as big as the default font, 3) change the text color to be navy, and 4) create a gray shadow for the text.
+
+## Associating CSS with HTML
+
+There are three ways that you can associate CSS with HTML. The first way is to use the `style` attribute of an HTML element and explicitly assign one or more declarations.
+
+```html
+<p style="color:green">CSS</p>
+```
+
+The next way to associate CSS is to use the HTML `style` element to define CSS rules within the HTML document. The `style` element should appear in the `head` element of the document so that the rules apply to all elements of the document.
+
+```html
+<head>
+  <style>
+    p {
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <p>CSS</p>
+</body>
+```
+
+The final way to associate CSS is to use the HTML `link` element to create a hyperlink reference to an external file containing CSS rules. The `link` element must appear in the `head` element of the document.
+
+```html
+<link rel="stylesheet" href="styles.css" />
+```
+
+in the **styles.css** file:
+
+```css
+p {
+  color: green;
+}
+```
+
+the `link` element usually is the preferred way to define CSS.
+
+## Cascading styles
+
+Because elements inherit the rules applied to their parents you often end up with the same declaration property applied to a single element multiple times. For example, we might set color property for all `body` elements to be red, and then `paragraph` elements to be green, and then `span` elements to be blue, and finally use a style element on a specific `span` to be black.
+
+```html
+<body>
+  <p><span style="color:black">CSS</span></p>
+</body>
+```
+
+```css
+body {
+  color: red;
+}
+p {
+  color: green;
+}
+span {
+  color: blue;
+}
+```
+
+In this case, the rules cascade down from the highest nodes in the DOM tree to the lowest level. Any declaration property defined at a lower level will override the higher declaration. You can use the browser's debugger to see this (`inspect` the element). You can click on each element in the debugger and see the value of the color property.
 
 
+## The box model
+
+CSS defines everything as boxes. When you apply styles, you are applying them to a region of the display that is a rectangular box. Within an element's box there are several internal boxes.  
+Content: innermost box; displays things like text or images of an element   
+Padding: will inherid things like background color  
+Border: has properties of color, thickness and line style  
+Margin: considered external to the actual styling of the box and only represents whitespace  
+
+![CSS box model](/Startup/startup/readme-media/cssBoxModel.jpeg)
+
+By default, the width and height of an element is defined by the width and height of the content box. You can change the `box-sizing` CSS property from the default value of `content-box` to `border-box` in order to redefine the width and height to also include the padding and the border. This often makes it easier to style elements when their visual size matches their actual size.
+
+# CSS Selectors
+
+📖 **Deeper dive reading**: [MDN CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors)
+
+The first step in understanding CSS is mastering how to select the elements that a CSS rule applies to. The CSS rule selector can take many forms. In order to explain the most common selectors we need some demonstration HTML. Let's image a simple document describing the departments in a university. In our case we have a physics and a chemistry department. The information provided is very sparse, but the structure provided by the HTML is enough to work with.
+
+```html
+<body>
+  <h1>Departments</h1>
+  <p>welcome message</p>
+  <section id="physics">
+    <h2>Physics</h2>
+    <p class="introduction">Introduction</p>
+    <p>Text</p>
+    <p class="summary">Summary</p>
+  </section>
+  <section id="chemistry">
+    <h2>Chemistry</h2>
+    <p class="introduction">Introduction</p>
+    <p>Text</p>
+    <p class="summary">Summary</p>
+  </section>
+</body>
+```
+
+## Element type selector
+
+To start things off, we want to make all elements in the document use a sans-serif font. We can do this by using an element name selector. By selecting the `body` element we will cascade our declaration down to all the children of the body, which is the whole document.
+
+```css
+body {
+  font-family: sans-serif;
+}
+```
+
+Note that we could also use the wildcard element name selector (`*`) to select all elements, but for our needs the `body` element will work just fine.
+
+We can also use element name selectors to give a bottom border to the top level heading (`h1`), as well as modify the section elements to pop out with a gray background and some white space in the padding and margins.
+
+```css
+h1 {
+  border-bottom: thin black solid;
+}
+
+section {
+  background: #eeeeee;
+  padding: 0.25em;
+  margin-bottom: 0.5em;
+}
+```
+
+## Combinators
+
+Next we want to change the color of the second level headings (`h2`), but we only want to do that within the sections for each department. To make that happen we can provide a `descendant combinator` that is defined with a space delimited list of values where each item in the list is a descendant of the previous item. So our selector would be all `h2` elements that are descendants of `section` elements.
+
+```css
+section h2 {
+  color: #004400;
+}
+```
+
+There are other types of combinators that you can use. These include the following.
+
+| Combinator       | Meaning                    | Example        | Description                                |
+| ---------------- | -------------------------- | -------------- | ------------------------------------------ |
+| Descendant       | A list of descendants      | `body section` | Any section that is a descendant of a body |
+| Child            | A list of direct children  | `section > p`  | Any p that is a direct child of a section  |
+| General sibling  | A list of siblings         | `p ~ div`      | Any p that has a div sibling               |
+| Adjacent sibling | A list of adjacent sibling | `p + div`      | Any p that has an adjacent div sibling     |
+
+We can use the general sibling combinator to increase the whitespace padding on the left of paragraphs that are siblings of a level two heading.
+
+```css
+h2 ~ p {
+  padding-left: 0.5em;
+}
+```
+
+## Class selector
+
+The next selector we will use is the class selector. Remember that any element can have zero or more classification applied to it. For example, our document has a class of `introduction` applied to the first paragraph, and a class of `summary` applied to the final paragraph of each section. If we want to bold the summary paragraphs we would supply the class name summary prefixed with a period (`.summary`).
+
+```css
+.summary {
+  font-weight: bold;
+}
+```
+
+You can also combine the element name and class selectors to select all paragraphs with a class of summary.
+
+```css
+p.summary {
+  font-weight: bold;
+}
+```
+
+## ID selector
+
+ID selectors reference the ID of an element. All IDs should be unique within an HTML document and so this select targets a specific element. To use the ID selector you prefix the ID with the hash symbol (`#`). We would like to showcase our physics department by putting a thin purple border along the left side of the physics section.
+
+```css
+#physics {
+  border-left: solid 1em purple;
+}
+```
+
+## Attribute selector
+
+Attribute selectors allow you to select elements based upon their attributes. You use an attribute selector to select any element with a given attribute (`a[href]`). You can also specify a required value for an attribute (`a[href="./fish.png"]`) in order for the selector to match. Attribute selectors also support wildcards `*` such as the ability to select attribute values containing specific text (`p[href*="https://"]).
+
+```css
+p[class='summary'] {
+  color: red;
+}
+```
+
+Full description of attribute selections refer to [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors).
+
+## Pseudo selector
+
+CSS also defines pseudo selectors which select based on positional relationships, mouse interactions, hyperlink visitation states, and attributes. We will give just one example. Suppose we what our purple highlight bar to appear only when the mouse hovers over the text. To accomplish this we can change our ID selector to select whenever a section is hovered over.
+
+```css
+section:hover {
+  border-left: solid 1em purple;
+}
+```
+
+more about pseudo selectors on [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes).
+
+## Example source
+
+The example [CodePen](https://codepen.io/leesjensen/pen/NWzByav).
+
+# CSS Declarations
+
+📖 **Deeper dive reading**: [MDN reference section on properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference)
+
+CSS rule declarations specify a property and value to assign when the rule selector matches one or more elements.
+
+| Property           | Value                              | Example             | Discussion                                                                     |
+| ------------------ | ---------------------------------- | ------------------- | ------------------------------------------------------------------------------ |
+| background-color   | color                              | `red`               | Fill the background color                                                      |
+| border             | color width style                  | `#fad solid medium` | Sets the border using shorthand where any or all of the values may be provided |
+| border-radius      | unit                               | `50%`               | The size of the border radius                                                  |
+| box-shadow         | x-offset y-offset blu-radius color | `2px 2px 2px gray`  | Creates a shadow                                                               |
+| columns            | number                             | `3`                 | Number of textual columns                                                      |
+| column-rule        | color width style                  | `solid thin black`  | Sets the border used between columns using border shorthand                    |
+| color              | color                              | `rgb(128, 0, 0)`    | Sets the text color                                                            |
+| cursor             | type                               | `grab`              | Sets the cursor to display when hovering over the element                      |
+| display            | type                               | `none`              | Defines how to display the element and its children                            |
+| filter             | filter-function                    | `grayscale(30%)`    | Applies a visual filter                                                        |
+| float              | direction                          | `right`             | Places the element to the left or right in the flow                            |
+| flex               |                                    |                     | Flex layout. Used for responsive design                                        |
+| font               | family size style                  | `Arial 1.2em bold`  | Defines the text font using shorthand                                          |
+| grid               |                                    |                     | Grid layout. Used for responsive design                                        |
+| height             | unit                               | `.25em`             | Sets the height of the box                                                     |
+| margin             | unit                               | `5px 5px 0 0`       | Sets the margin spacing                                                        |
+| max-[width/height] | unit                               | `20%`               | Restricts the width or height to no more than the unit                         |
+| min-[width/height] | unit                               | `10vh`              | Restricts the width or height to no less than the unit                         |
+| opacity            | number                             | `.9`                | Sets how opaque the element is                                                 |
+| overflow           | [visible/hidden/scroll/auto]       | `scroll`            | Defines what happens when the content does not fix in its box                  |
+| position           | [static/relative/absolute/sticky]  | `absolute`          | Defines how the element is positioned in the document                          |
+| padding            | unit                               | `1em 2em`           | Sets the padding spacing                                                       |
+| left               | unit                               | `10rem`             | The horizontal value of a positioned element                                   |
+| text-align         | [start/end/center/justify]         | `end`               | Defines how the text is aligned in the element                                 |
+| top                | unit                               | `50px`              | The vertical value of a positioned element                                     |
+| transform          | transform-function                 | `rotate(0.5turn)`   | Applies a transformation to the element                                        |
+| width              | unit                               | `25vmin`            | Sets the width of the box                                                      |
+| z-index            | number                             | `100`               | Controls the positioning of the element on the z axis                          |
+
+## Units
+
+📖 **Deeper dive reading**: [MDN Values and units](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units)
+
+You can use a variety of units when defining the size of a CSS property. For example, a the width of an element can be defined using absolute units such as the number of pixels (`px`) or inches (`in`). You can also use relative units such as a percentage of the parent element (`50%`), a percentage of a minimum viewport dimension (`25vmin`), or a multiplier of the size of the letter m (`1.5rem`) as defined by the root element.
+
+```css
+p {
+  width: 25%;
+  height: 30vh;
+}
+```
+
+Here is a list of the most commonly used units. All of the units are prefixed with a number when used as a property value.
+
+| Unit | Description                                                      |
+| ---- | ---------------------------------------------------------------- |
+| px   | The number of pixels                                             |
+| pt   | The number of points (1/72 of an inch)                           |
+| in   | The number of inches                                             |
+| cm   | The number of centimeters                                        |
+| %    | A percentage of the parent element                               |
+| em   | A multiplier of the width of the letter `m` in the parent's font |
+| rem  | A multiplier of the width of the letter `m` in the root's font   |
+| ex   | A multiplier of the height of the element's font                 |
+| vw   | A percentage of the viewport's width                             |
+| vh   | A percentage of the viewport's height                            |
+| vmin | A percentage of the viewport's smaller dimension                 |
+| vmax | A percentage of the viewport's larger dimension                  |  
+
+root element - the highest level element in the document, usually the `<html>` tag  
+content box - the element; default size of element;  
+padding - the next out, clears an area around the content. The padding is transparent; default 0  
+border- the edge; default 0  
+margin- empty space between elements if you add it; default 0  
+fr - only availabe in display: grid; means fraction of available space. 1fr means all of the available space. You can also combine them in rations so 1fr and 2fr would split the space into three parts and give 1 part to an element and 2 parts to another  
+
+## Color
+
+📖 **Deeper dive reading**: [MDN Applying color](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Colors/Applying_color)
+
+CSS defines multiple ways to describe color, ranging from representations familiar to programmers and ones familiar to layout designers and artists.
+
+| Method       | Example                   | Description                                                                                                                                                                                                       |
+| ------------ | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| keyword      | `red`                     | A set of predefined colors (e.g. white, cornflowerblue, darkslateblue)                                                                                                                                            |
+| RGB hex      | `#00FFAA22` or `#0FA2`    | Red, green, and blue as a hexadecimal number, with an optional alpha opacity                                                                                                                                      |
+| RGB function | `rbg(50%, 255, 128, 0.5)` | Red, green, and blue as a percentage or number between 0 and 255, with an optional alpha opacity percentage                                                                                                       |
+| HSL          | `hsl(180, 30%, 90%, 0.5)` | Hue, saturation, and light, with an optional opacity percentage. Hue is the position on the 365 degree color wheel (red is 0 and 255). Saturation is how gray the color is, and light is how bright the color is. |
 
 
+[CodePen](https://codepen.io/leesjensen/pen/rNKrgKQ) demonstrates the use of many of the above declarations
 
+# CSS Fonts
 
+📖 **Deeper dive reading**: [MDN Web fonts](https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text/Web_fonts)
 
+The CSS `font-family` property defines what fonts should be used. The property value represents an ordered list of fonts. The first font in the list that is available will be used. This ability to select from a list of fonts is important because different operating systems have different default fonts and your first choice may not be available.
 
+## Font families
 
+There are four major families of fonts: `Serif`, `san-serif`, `fixed`, and `symbol`. A serif is a small stroke attached to the ends of a character's major strokes. Serif fonts have the extra strokes, san-serif fonts do not. Fixed fonts characters all are the same size. This is useful for lining up text when doing things like coding or display tabular data. Symbol fonts represent non-language characters such as arrows or emojis.
 
+## Importing fonts
 
+In addition to referencing standard fonts found on the user's computer you can specify a font that you provide with your application. That way your application is guaranteed to always look the same. In order to have the browser load a font you use the `@font-face` rule and provide the font name and source location.
 
+```css
+@font-face {
+  font-family: 'Quicksand';
+  src: url('https://cs260.click/fonts/quicksand.woff2');
+}
 
-## FONTS
-Use https://fonts.google.com/ for free fonts
- example: 
-  @import url('https://fonts.googleapis.com/css2?family=Source Code Pro:wght@300&display=swap');
-  body {
-    font-family: 'Source Code Pro';
+p {
+  font-family: Quicksand;
+}
+```
+
+If you do not want to host font files on your server, then you can load them from a font provider. For example, Google [open source fonts](https://fonts.google.com/). The easiest way to use Google fonts is to use a CSS import statement to reference the Google Font Service. This will automatically generate the CSS for importing the font.
+
+```css
+@import url('https://fonts.googleapis.com/css2?family=Rubik Microbe&display=swap');
+
+p {
+  font-family: 'Rubik Microbe';
+}
+```
+
+This [CodePen](https://codepen.io/leesjensen/pen/zYaLgVW) provides an example of importing fonts.
+
+# CSS Animation
+
+📖 **Deeper dive reading**: [MDN Animation](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations)
+
+You create CSS animations using the `animation` properties and defining `keyframes` for what the element should look like a different times in the animation. Let's walk through an example.
+
+We have a paragraph of centered text and we want it to zoom in until its size is 20% of the view height.
+
+```css
+p {
+  text-align: center;
+  font-size: 20vh;
+}
+```
+
+To make this happen we specify that we are animating the selected elements by adding the `animation-name` property with a value of demo. This name refers to the name of the `keyframes` that we will specify in a minute. The keyframes tell what CSS properites should be applied at different key points in the animation sequence. We also add an `animation-duration` property in order to specify that the animation should last for three seconds.
+
+```css
+p {
+  text-align: center;
+  font-size: 20vh;
+
+  animation-name: demo;
+  animation-duration: 3s;
+}
+```
+
+Now we are ready to create the keyframes. We don't have to define what happens at every millisecond of the animation. Instead we only need to define the key points and CSS will generate a smooth transition to move from one keyframe to another. In our case we simply want to start with text that is invisible and have it zoom into the full final size. We can do this with two frames that are designated with the keywords `from` and `to`.
+
+```css
+@keyframes demo {
+  from {
+    font-size: 0vh;
   }
 
+  to {
+    font-size: 20vh;
+  }
+}
+```
+
+It would look better if towards the end, the paragraph bounce out a little bigger than its final size. We can accommodate that by adding another key frame that happens 95 percent through the animation.
+
+```css
+@keyframes demo {
+  from {
+    font-size: 0vh;
+  }
+
+  95% {
+    font-size: 21vh;
+  }
+
+  to {
+    font-size: 20vh;
+  }
+}
+```
+
+You can see this animation working with this [CodePen](https://codepen.io/leesjensen/pen/LYrJEwX).
+
+Animation is not just for pushing buttons or making text float around. Here is an example of [animating a watch](https://codepen.io/leesjensen/pen/MWBjXNq) using only HTML and CSS.
+
+CodePen has a lot of CSS animation examples that you can experiment with. Here is a simple one with [floating clouds](https://codepen.io/leesjensen/pen/wvXEaRq)
+
+# Responsive design
+
+📖 **Deeper dive reading**: [MDN Responsive design](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
+
+Modern web applications are expected to run well on a large variety of computing devices. This includes everything from desktops, to mobile phones, to shopping kiosks, to car dashboards. This ability to reconfigure the interface so the application accommodates and takes advantage of the screen's size and orientation is called `responsive design`.
+
+Much of HTML and CSS is already fluid due to the fact that it responds to the browser window being resized. For example a paragraph element will resize when the browser window is resized. However, the following features can completely change the layout of the application based on the device's size and orientation.
+
+## Display
+
+📖 **Deeper dive reading**: [MDN Display](https://developer.mozilla.org/en-US/docs/Web/CSS/display)
+
+The CSS display property allows you to change how an HTML element is displayed by the browser. The common options for the display property include the following.
+
+| Value  | Meaning                                                                                                                      |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| none   | Don't display this element. The element still exists, but the browser will not render it.                                    |
+| block  | Display this element with a width that fills its parent element. A `p` or `div` element has block display by default.        |
+| inline | Display this element with a width that is only as big as its content. A `b` or `span` element has inline display by default. |
+| flex   | Display this element's children in a flexible orientation.                                                                   |
+| grid   | Display this element's children in a grid orientation.                                                                       |
+
+We can demonstrate the different CSS display property values with the following HTML that contains a bunch of `div` elements. By default `div` elements have a display property value of `block`.
+
+```html
+<div class="none">None</div>
+<div class="block">Block</div>
+<div class="inline">Inline1</div>
+<div class="inline">Inline2</div>
+<div class="flex">
+  <div>FlexA</div>
+  <div>FlexB</div>
+  <div>FlexC</div>
+  <div>FlexD</div>
+</div>
+<div class="grid">
+  <div>GridA</div>
+  <div>GridB</div>
+  <div>GridC</div>
+  <div>GridD</div>
+</div>
+```
+
+With the default of `block` this HTML would render like this.
+
+![CSS default div display](cssDisplayDefault.jpg)
+
+If we modify the display property associated with each element with the following CSS, then we get a totally different rendering.
+
+```css
+.none {
+  display: none;
+}
+
+.block {
+  display: block;
+}
+
+.inline {
+  display: inline;
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+```
+
+![CSS display](cssDisplay.jpg)
+
+You can experiment with different display property values with this [CodePen](https://codepen.io/leesjensen/pen/RwBOPjv).
+
+## Viewport meta tag
+
+When smart mobile devices started gaining popularity they began to be used to view websites. However, the websites were optimized for desktop displays and not little tiny mobile screens. To solve this mobile browsers automatically started scaling the website so that it looked better on a small screen. Unfortunately, as web applications started being responsive to the screen size, the mobile browser's scaling got in the way. The solution is to include a meta tag in the `head` element of all your HTML pages. This tells the browser to not scale the page.
+
+```html
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+```
+
+## Float
+
+The float css property moves an element to the left or right of its container element and allows inline elements to wrap around it. For example, if we had an `aside` element followed by a large paragraph of text, we could create the following CSS rule in order to cause the text to wrap around the aside.
+
+```css
+aside {
+  float: right;
+  padding: 3em;
+  margin: 0.5em;
+  border: black solid thin;
+}
+```
+
+![CSS float](cssFloat.gif)
+
+When the browser resizes, the text will flow around the floating element. You can use this [CodePen](https://codepen.io/leesjensen/pen/MWBRWPP) to experiment with `float`. Try changing the descriptor value to `none` or `left` and see what happens.
+
+## Media queries
+
+One of the main CSS features for creating responsive applications is the `@media` selector. This selector dynamically detects the size and orientation of the device and applies CSS rules to represent the structure of the HTML in a way that accommodates the change.
+
+We can use the `@media` selector to tell us which side of the screen (technically the viewport) is the longest. A media query takes one or more predicates separated by boolean operators. In our case we simply want to know if the screen is oriented in portrait mode (short side on top) or not. If it is then we transform all of our div elements by rotating them 270 degrees.
+
+```css
+@media (orientation: portrait) {
+  div {
+    transform: rotate(270deg);
+  }
+}
+```
+
+We can demonstrate the result of applying the media selector by using the browser's debugger and switching into phone and responsive mode. You can also use this [CodePen](https://codepen.io/leesjensen/pen/rNKZOva) and play with it yourself by simply resizing the browser's window.
+
+![CSS Media orientation](cssMediaOrientation.gif)
+
+You can also use media queries to make entire pieces of your application disappear, or move to a different location. For example, if we had an aside that was helpful when the screen is wide, but took up too much room when the screen got narrow, we could use the following media query to make it disappear.
+
+```css
+@media (orientation: portrait) {
+  aside {
+    display: none;
+  }
+}
+```
+
+![CSS Media orientation](cssMediaDisappear.gif)
+
+Here is the [CodePen](https://codepen.io/leesjensen/pen/NWzLGmJ) for this example.
+
+## Grid and Flexbox
+
+The final two responsive technologies that we want to discuss are Grid and Flexbox. These are both CSS display modes that automatically respond to screen sizes to position and resize their child elements. We will discuss each of these in detail in the following instruction.
 
 
 
@@ -919,6 +1452,167 @@ Use https://fonts.google.com/ for free fonts
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Memory of Light's notes
+
+## Simon Feb 14 CSS What I learned
+
+Positioning Functions
+- float moves an element to the left or right of its container element and allows inline elements to wrap around it. 
+- gap: value - This property is specified as a value for <'row-gap'> followed optionally by a value for <'column-gap'>. If <'column-gap'> is omitted, it's set to the same value as <'row-gap'>. Used in grids. synonymous with grid-gap: value;
+- margin: top right bottom left;
+- top: value - moves the element a distance from the top of its container. takes % as well
+- bottom: val - moves element up a distance from the bottom of its container, etc
+- right
+- left
+- translateX() - moves an element horizontally on the 2D plane. It takes a distance value as a parameter, which can be specified in pixels (px), ems (em), or other length units, and indicates how far to move the element along the horizontal axis. Negative moves left, positive moves right; if you use a percent it refers to a percent of the element's own width and height; DOES NOT AFFECT STATIC ELEMENTS
+- translateY() - same as X but vertical
+- transform: translateX() translateY() - transform property allows you to apply a transformation to the element while keeping its position and layout within the document flow intact. transform allows you to act on static elements
+- flex: flex-grow flex-basis; flex-grow defines how much the item will grow to fill around it. 1 means it will fill all available space. flex-basis is the value that says the intitial size of the flex item.
+margin-top: val - sets the margin space on the top
+margin-botton
+margin-left
+margin-right
+
+Design Functions
+- border-radius: 50% will make a circle; it gets complicated after that with all the values
+- width: 100% - sets the width equal to the width of the parent element
+
+#### Design Layout
+`text-align: center` can center your text horizontally  
+`line-height: (insert 1/2height of element)` will center the text vertically  
+`align-items: center` aligns items along the cross axis of the flex container; centers them  
+`justify-content: center` aligns items along the main axis of the flex container; centers them.  
+
+### CSS Position
+using position: value;
+"static": This is the default value, and it means that the element is positioned according to the normal flow of the page.
+
+"relative": This value positions the element relative to its normal position, without affecting the position of other elements on the page. IF you don't set "top, right, left, or bottom" the element will retain its normal position. Good to use with a child that has absolute position.
+
+"absolute": This value positions the element relative to its closest POSITIONED ancestor (i.e., an ancestor with a position value other than "static"), or the containing block if there is no positioned ancestor. ( useful bc they are removed from the normal flow and can overlap other elements.)
+
+"fixed": This value positions the element relative to the browser window, so it remains in the same position even if the page is scrolled.
+
+Each of these values can be further adjusted with additional properties such as top, right, bottom, and left to specify the exact position of the element on the page.
+### CSS Functions
+#### Returning Functions
+- The "min()" function in CSS returns the smaller of two or more comma-separated values.
+#### Positioning Functions
+- float moves an element to the left or right of its container element and allows inline elements to wrap around it. 
+- gap: value - This property is specified as a value for <'row-gap'> followed optionally by a value for <'column-gap'>. If <'column-gap'> is omitted, it's set to the same value as <'row-gap'>. Used in grids. synonymous with grid-gap: value;
+- margin: top right bottom left;
+- top: value - moves the element a distance from the top of its container. takes % as well
+- bottom: val - moves element up a distance from the bottom of its container, etc
+- right
+- left
+- translateX() - moves an element horizontally on the 2D plane. It takes a distance value as a parameter, which can be specified in pixels (px), ems (em), or other length units, (IF YOU GIVE IT % IT MEANS A PERCENTAGE OF THE WIDTH OF THE ELEMENT)and indicates how far to move the element along the horizontal axis. Negative moves left, positive moves right; if you use a percent it refers to a percent of the element's own width and height; DOES NOT AFFECT STATIC ELEMENTS
+- translateY() - same as X but vertical
+- transform: translateX() translateY() - transform property allows you to apply a transformation to the element while keeping its position and layout within the document flow intact. transform allows you to act on static elements
+- flex: flex-grow flex-basis; flex-grow defines how much the item will grow to fill around it. 1 means it will fill all available space. flex-basis is the value that says the intitial size of the flex item.
+margin-top: val - sets the margin space on the top
+margin-botton
+margin-left
+margin-right
+margin: 50% - the margin will be 50% the width of its containing block.
+#### Design Functions
+- border-radius: 50% will make a circle; it gets complicated after that with all the values
+- width: 100% - sets the width equal to the width of the parent element
+
+
+
+## Test Review
+chmod +x deploy.sh - 
+chmod takes options and a mode modifier and then a file to be granted access
+chmod [options] mode filename;
+common option values;
+
+-R: Recursively change the permissions of all files and directories within the specified directory.
+-v: Print a message for each file or directory that is modified.
+-c: Print a message only for files or directories whose permissions are actually changed.
+
+Some common values for the mode argument include:
+
+u: Sets the permissions for the file owner.  
+g: Sets the permissions for the group owner.  
+o: Sets the permissions for everyone else.  
+r: Gives read permission.  
+w: Gives write permission.  
+x: Gives execute permission.  
+
+
+
+
+# startup
+startup assignment cs260 W23
+ 
+Pitch: 
+Learn about animals and adopt your own virtually. Through this application, you can adopt your own virtual pets and learn their conservation status and cool facts about them! You will be able to choose the species of your new pet, name them, and even accessorize them. All pets that you create will be saved under your account so you can keep track of your adorable critters. 
+
+[MODEL](https://github.com/hajjiinnn/startup//READMEMedia/blob/main/Untitled_Artwork.pdf)
+
+Key features include:  
+-secure login via HTTPS  
+-ability to choose, name, and accessorize pet  
+-ability to see pets in their habitat  
+-ability to edit pets in your account  
 
 
 ### Jenson's Midterm Review
@@ -1081,305 +1775,3 @@ chmod +x allows executalbe permission
 sudo stands for "substitue user do" or "super user do"; allows you to temporarily elevate your current user account to have root privileges  
 ls lists contents of current directory  
 ssh (secure shell) provides a secure encrypted connection between two hosts over an insecure network  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Memory of Light's notes
-
-## Simon Feb 14 CSS What I learned
-
-Positioning Functions
-- float moves an element to the left or right of its container element and allows inline elements to wrap around it. 
-- gap: value - This property is specified as a value for <'row-gap'> followed optionally by a value for <'column-gap'>. If <'column-gap'> is omitted, it's set to the same value as <'row-gap'>. Used in grids. synonymous with grid-gap: value;
-- margin: top right bottom left;
-- top: value - moves the element a distance from the top of its container. takes % as well
-- bottom: val - moves element up a distance from the bottom of its container, etc
-- right
-- left
-- translateX() - moves an element horizontally on the 2D plane. It takes a distance value as a parameter, which can be specified in pixels (px), ems (em), or other length units, and indicates how far to move the element along the horizontal axis. Negative moves left, positive moves right; if you use a percent it refers to a percent of the element's own width and height; DOES NOT AFFECT STATIC ELEMENTS
-- translateY() - same as X but vertical
-- transform: translateX() translateY() - transform property allows you to apply a transformation to the element while keeping its position and layout within the document flow intact. transform allows you to act on static elements
-- flex: flex-grow flex-basis; flex-grow defines how much the item will grow to fill around it. 1 means it will fill all available space. flex-basis is the value that says the intitial size of the flex item.
-margin-top: val - sets the margin space on the top
-margin-botton
-margin-left
-margin-right
-
-Design Functions
-- border-radius: 50% will make a circle; it gets complicated after that with all the values
-- width: 100% - sets the width equal to the width of the parent element
-
-CSS Units and Definitions
-80vmin - 80 percent of the viewport's smaller dimension  
-px - pixels  
-em - the font size of the parent element  
-content box - the element; default size of element;  
-padding - the next out, clears an area around the content. The padding is transparent; default 0  
-border- the edge; default 0  
-margin- empty space between elements if you add it; default 0  
-fr - only availabe in display: grid; means fraction of available space. 1fr means all of the available space. You can also combine them in rations so 1fr and 2fr would split the space into three parts and give 1 part to an element and 2 parts to another
-
-## CSS (Cascading Style Sheets)
-animate, display custom fonts, respond to user actions, alter layout of page dynamically based off of device being used
-Functionality of CSS
-- defining rulesets or rules
-- a rule is comprised of a `selector` that selects elements to apply the rule to, as well as a `declaration` or two or however many that represent the `property` to style with the given `property value`.
-consider this rule:
-EX. `selector`p{
- `property`color: green;`green is the value`
- `line is the declaration`
-}
-Ex. p {
-      color: green;
-    }
-The following rule:
-Ex. p {
-      font-family: sans-serif;
-      font-size: 2em;
-      color: navy;
-      text-shadow: 3px 3px 1px #cccccc;
-    }
-selector p selects all paragraph elements in the doc. The 4 declarations then change font, increase size, change text color, create a shadow.
-### Associate CSS w/ HTML
-1. use the style attrtibute on an HTML element and explicitly assign one or more declarations.
-ex. `<p style="color: green">CSS</p>`
-2. use the style ELEMENT- not attribute- to define CSS rules w/in the doc. This should appread in the head element of the doc so the rules apply to the whole thing.
-3. use the link element to create a hyperlink reference to an external file containing CSS rules. This must also be in the head element. This is the preferred way.
-Elements inherit the rules applied to their parents, so lower level declarations override higher level ones to allow for specificity.
-### The box model
-CSS defines everything as a box. Styles apply to everything in the box. Inner to Outer.
-- the element's content (text)
-- the padding (stuff like background color)
-- border (color, thickness, line style)
-- margin (considered external to the styling of the box and so represents whitespace)
-The default width and height of an element is the width and height of the content box (the innermost box). YOu can changed the `box-sizing` CSS property from default `content-box` to `border-box` to redefine width and height to also include padding and border. This can make it easier to style elements when their visual size matches their actual size.
-### Selectors
-the selector will determine which elements are affected by the rule. `*` is a wildcard selector that selects all elements.
-You can be more specific with selectors by using `descendant combinators`. For instance, saying section h2 {
-  color: #004400;
-}
-would only apply the color to h2 elements who were within or "descended from" section elements.
-#### Combinators
-- Descendant - anything within; div p (selects all p elements within div elements)
-- Child - one level within; div > p (selects all p elements that )
-- General Sibling - div ~ p (selects all p that follow a div and have the same parent elements as div)
-- Adjacent Sibling - div + p (selects p that is immediately following a div and has the same parent elements as div)
-#### Class Selectors
-any element can have 0 or more classifications
-to use the classification in a rule do
-.classnamehere {
-  stuff to implement
-}
-you can also combine element with class
-ex.
-p.summary{
-  stuff
-}
-this changes all p items of summary class.
-#### ID Selector
-prefix id with `#`
-ex.
-#idhere {
-  stuff
-}
-changes the element with that id.
-#### Attribute Selector
-support wildcards
-ex.
-p[class='summary'] {
-  color: red;
-}
-this changes all p elements with the class attribute of summary
-a[href] selects every a element with the href attribute
-#### Psuedo Selector
-section:hover {
-  blah blah
-}
-changes the section only when mouse is hovering over it.
-### CSS Fonts
-`font-family` property defines what fonts should be used. The value represents an ordered list of fonts of which the first one will be used by default.
-- 4 major font families: serif, san-serif, fixed, and symbol. serif is a small stroke attached to ends of a characters major strokes. san-serif is without the serif. fixed means all characters the same size. symbol is non-language characters.
-@font-face{
-  font-family: 'blah blah';
-  src: url('blahblah');
-}
-This lets the browser load a font you give the source for so that your app looks the same on every device. You can either host font files on your server or load from a font provider like google fonts.
-### CSS Animation
-use animation properties and define keyframes for what the element should look like at different times in the animation
-first put
-animation-name: namehere
-animation-duration: #s;
-in the element you want animated
-Then in the CSS doc put
-@keyframes namehere{
-  from{
-    initial state of animation
-  }
-  83 {
-    this section is optional, but you can add sections between from and to which happen at the percentage through the animation of the number you enter. This happenn 83% of the way through the animation.
-  }
-  to{
-    final state of animation
-  }
-}
-CSS will figure out how to get from state to state.
-### Responsive Design
--the ability to reconfigure the interface based off of the device running the webiste
-#### Design
-- `display` in CSS will allow you to change how an HTML element is displayed by the browser. Common values
-- `none` don't display element. 
-- `block` display element with a width that fills its parent element. (p and div have block display by deault)
-- `inline` display element with a width that is only as big as its content (b and span have inline as default)
-- `flex` display this element's children in a flexible orientation.
-- `grid` display elements children in a grid orientation.
-#### Viewport
-to make it good on phone and desktop.
-include a meta tag in the head element of all your HTML pages. This tells the browser not to scale the page.
-`<meta name="viewport" content="width=device-width,initial-scale=1" />`
-#### Float
-`float` moves an element to the left or right of its container element and allows inline elements to wrap around it. 
-#### Media Queries
-`@media` dynamically detects the size and orientation of the device and applies CSS rules to represent the structure of the HTML in a way that accomodates the change.
-- tells us which side of the viewport is the longest.
-@media (orientation: portrait) {
-  div {
-    transform: rotate(270deg);
-  }
-}
-will rotate the screen 270degrees when the app is in portrait mode
-@media (orientation: portrait) {
-  aside {
-    display: none;
-  }
-}
-will not display asides when the viewport is in portrait mode
-#### Grid
-`grid` is useful when you want to display a group of child elements in a responsive grid
-ex.
-.container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-auto-rows: 300px;
-  grid-gap: 1em;
-}
-`grid-template-colums` lets us layout the columns here we repeatedly define each column to autofill the width of the parent with children that are resized to a min of 300px and a max of 1fr whic is a fractional unit of grid width or equal to the parent element split into equal parts for the children
-figure out the other ig.
-#### Flexbox
--useful when you want to partition your app into areas that responsively move around as the window resizes or the orientation changes.
-- children inside of a flex display are given the `flex` property which tells the browser what proportion of the available space each child will get.
-`flex-direction` can take on 4 values. default is row (left to right), then row-reverse (right to left) then column and column-reverse. These represent the main axis of ordering the flex children.
-#### Design Layout
-`text-align: center` can center your text horizontally  
-`line-height: (insert 1/2height of element)` will center the text vertically  
-`align-items: center` aligns items along the cross axis of the flex container; centers them  
-`justify-content: center` aligns items along the main axis of the flex container; centers them.  
-
-### CSS Position
-using position: value;
-"static": This is the default value, and it means that the element is positioned according to the normal flow of the page.
-
-"relative": This value positions the element relative to its normal position, without affecting the position of other elements on the page. IF you don't set "top, right, left, or bottom" the element will retain its normal position. Good to use with a child that has absolute position.
-
-"absolute": This value positions the element relative to its closest POSITIONED ancestor (i.e., an ancestor with a position value other than "static"), or the containing block if there is no positioned ancestor. ( useful bc they are removed from the normal flow and can overlap other elements.)
-
-"fixed": This value positions the element relative to the browser window, so it remains in the same position even if the page is scrolled.
-
-Each of these values can be further adjusted with additional properties such as top, right, bottom, and left to specify the exact position of the element on the page.
-### CSS Functions
-#### Returning Functions
-- The "min()" function in CSS returns the smaller of two or more comma-separated values.
-#### Positioning Functions
-- float moves an element to the left or right of its container element and allows inline elements to wrap around it. 
-- gap: value - This property is specified as a value for <'row-gap'> followed optionally by a value for <'column-gap'>. If <'column-gap'> is omitted, it's set to the same value as <'row-gap'>. Used in grids. synonymous with grid-gap: value;
-- margin: top right bottom left;
-- top: value - moves the element a distance from the top of its container. takes % as well
-- bottom: val - moves element up a distance from the bottom of its container, etc
-- right
-- left
-- translateX() - moves an element horizontally on the 2D plane. It takes a distance value as a parameter, which can be specified in pixels (px), ems (em), or other length units, (IF YOU GIVE IT % IT MEANS A PERCENTAGE OF THE WIDTH OF THE ELEMENT)and indicates how far to move the element along the horizontal axis. Negative moves left, positive moves right; if you use a percent it refers to a percent of the element's own width and height; DOES NOT AFFECT STATIC ELEMENTS
-- translateY() - same as X but vertical
-- transform: translateX() translateY() - transform property allows you to apply a transformation to the element while keeping its position and layout within the document flow intact. transform allows you to act on static elements
-- flex: flex-grow flex-basis; flex-grow defines how much the item will grow to fill around it. 1 means it will fill all available space. flex-basis is the value that says the intitial size of the flex item.
-margin-top: val - sets the margin space on the top
-margin-botton
-margin-left
-margin-right
-margin: 50% - the margin will be 50% the width of its containing block.
-#### Design Functions
-- border-radius: 50% will make a circle; it gets complicated after that with all the values
-- width: 100% - sets the width equal to the width of the parent element
-### CSS Units and Definitions
-80vmin - 80 percent of the viewport's smaller dimension  
-px - pixels  
-vh - viewport height  
-vw -viewport width  
-em - the font size of the parent element  
-rem - the font size of the root element.  
-root element - the highest level element in the document, usually the `<html>` tag  
-content box - the element; default size of element;  
-padding - the next out, clears an area around the content. The padding is transparent; default 0  
-border- the edge; default 0  
-margin- empty space between elements if you add it; default 0  
-fr - only availabe in display: grid; means fraction of available space. 1fr means all of the available space. You can also combine them in rations so 1fr and 2fr would split the space into three parts and give 1 part to an element and 2 parts to another  
-
-
-## Test Review
-chmod +x deploy.sh - 
-chmod takes options and a mode modifier and then a file to be granted access
-chmod [options] mode filename;
-common option values;
-
--R: Recursively change the permissions of all files and directories within the specified directory.
--v: Print a message for each file or directory that is modified.
--c: Print a message only for files or directories whose permissions are actually changed.
-
-Some common values for the mode argument include:
-
-u: Sets the permissions for the file owner.  
-g: Sets the permissions for the group owner.  
-o: Sets the permissions for everyone else.  
-r: Gives read permission.  
-w: Gives write permission.  
-x: Gives execute permission.  
-
-
-
-
-# startup
-startup assignment cs260 W23
- 
-Pitch: 
-Learn about animals and adopt your own virtually. Through this application, you can adopt your own virtual pets and learn their conservation status and cool facts about them! You will be able to choose the species of your new pet, name them, and even accessorize them. All pets that you create will be saved under your account so you can keep track of your adorable critters. 
-
-[MODEL](https://github.com/hajjiinnn/startup//READMEMedia/blob/main/Untitled_Artwork.pdf)
-
-Key features include:  
--secure login via HTTPS  
--ability to choose, name, and accessorize pet  
--ability to see pets in their habitat  
--ability to edit pets in your account  
